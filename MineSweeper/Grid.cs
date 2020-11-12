@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MineSweeper
 {
-  public class Grid<TItemType>
+  public class Grid<TItemType>  
   {
     private readonly TItemType[,] _cellGrid;
 

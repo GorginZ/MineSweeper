@@ -13,7 +13,6 @@ namespace MineSweeper
     {
       _field = new Grid<CellContents>(rowDimension, columnDimension);
       _numberOfMines = numberOfMines;
-
       InitializeField(rowDimension, columnDimension);
     }
 
@@ -30,8 +29,8 @@ namespace MineSweeper
       for (int i = _numberOfMines; i != 0; i--)
       {
         var rnd = new Random();
-        int rndRow = rnd.Next(rowDimension, columnDimension);
-        int rndCol = rnd.Next(rowDimension, columnDimension);
+        int rndRow = rnd.Next(0, rowDimension);
+        int rndCol = rnd.Next(0, columnDimension);
         mines.Add(new RowColumn(rndRow, rndCol));
       }
       this._field.SetMany(mines, CellContents.Mine);
