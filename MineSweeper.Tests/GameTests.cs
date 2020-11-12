@@ -6,12 +6,13 @@ namespace MineSweeper.Tests
   public class GameTests
   {
     [Fact]
-    public void GameHasAFieldOfCellContentsSafeAndMine()
+    public void MineFieldCellsAreEitherSafeOrMine()
     {
-      //not a very meaningful test coz random revisit
       var game = new Game(1, 2, 1);
       var field = game.GetField();
-      Assert.True(field[0,0] == CellContents.Safe || field[0,0] == CellContents.Mine);
+      Assert.True(field[0, 0] == CellContents.Safe || field[0, 0] == CellContents.Mine);
+      Assert.True(field[0, 1] == CellContents.Safe || field[0, 1] == CellContents.Mine);
+
     }
     [Fact]
     public void CanInitializeFieldWithRowColumnDimensionsAndCustomNumberOfMines()
@@ -32,10 +33,6 @@ namespace MineSweeper.Tests
       }
       Assert.Equal(20, actualNumberOfMinesInField);
     }
-   public void PlayerDoesntLooseFirstSelection()
-   {
-
-   } 
 
   }
 }
