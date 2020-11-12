@@ -22,20 +22,27 @@ namespace MineSweeper
       set => _cellGrid[row, column] = value;
     }
 
-    public TItemType this[RowColumn coordinates]
+    public TItemType this[RowColumn indexRowColumn]
     {
-      get => _cellGrid[coordinates.Row, coordinates.Column];
-      set => _cellGrid[coordinates.Row, coordinates.Column] = value;
+      get => _cellGrid[indexRowColumn.Row, indexRowColumn.Column];
+      set => _cellGrid[indexRowColumn.Row, indexRowColumn.Column] = value;
     }
 
     public void SetAllCells(TItemType value)
     {
-      // two forloop
+
+      for (int i = 0; i < RowCount; i++)
+      {
+        for (int j = 0; j < ColumnCount; j++)
+        {
+          this[i,j] = value;
+        }
+    }
     }
 
-    public void SetMany(List<RowColumn> coordinatesToSet, TItemType value)
+    public void SetMany(IEnumerable<RowColumn> indexesToSet, TItemType value)
     {
-      foreach (RowColumn coordinate in coordinatesToSet)
+      foreach (RowColumn coordinate in indexesToSet)
       {
         if (coordinate.Column < ColumnCount && coordinate.Row < RowCount)
         {

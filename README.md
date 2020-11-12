@@ -1,1 +1,4 @@
 # MineSweeper
+
+## Domain Driven Design
+
