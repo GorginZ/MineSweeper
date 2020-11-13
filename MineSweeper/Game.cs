@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MineSweeper
 {
   public class Game
   {
     private Grid<CellContents> _field;
+    private int _numberOfMines;
 
-    public Game(int rowDimension, int columnDimension)
+    public Game(int rowDimension, int columnDimension, int numberOfMines)
     {
       _field = new Grid<CellContents>(rowDimension, columnDimension);
+      _numberOfMines = numberOfMines;
+      InitializeField(rowDimension, columnDimension);
     }
 
     public Grid<CellContents> GetField()
@@ -17,11 +21,19 @@ namespace MineSweeper
       return _field;
     }
 
-
-    public void InitializeField(List<RowColumn> CoordinatesList)
+    private void InitializeField(int rowDimension, int columnDimension)
     {
-      this._field.SetMany(CoordinatesList, CellContents.Safe);
-      this._field.SetMany(CoordinatesList, CellContents.Mine);
+      HashSet<RowColumn> mines = new HashSet<RowColumn>();
+      this._field.SetAllCells(CellContents.Safe);
+
+      for (int i = _numberOfMines; i != 0; i--)
+      {
+        var rnd = new Random();
+        int rndRow = rnd.Next(0, rowDimension);
+        int rndCol = rnd.Next(0, columnDimension);
+        mines.Add(new RowColumn(rndRow, rndCol));
+      }
+      this._field.SetMany(mines, CellContents.Mine);
     }
 
 
