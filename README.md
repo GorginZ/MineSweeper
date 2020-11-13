@@ -1,4 +1,6 @@
 # MineSweeper
 
-## Domain Driven Design
+## Planning and Design
+
+<img src="docs/DFD.png">
 
