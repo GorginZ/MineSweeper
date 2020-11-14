@@ -15,24 +15,43 @@ namespace MineSweeper.Tests
 
     }
     [Fact]
-    public void CanInitializeFieldWithRowColumnDimensionsAndCustomNumberOfMines()
+    public void CanMakeSafeField()
     {
-      var game = new Game(20, 30, 20);
-      var mineField = game.GetField();
-      int actualNumberOfMinesInField = 0;
-
-      for (int i = 0; i < 20; i++)
+      var game = new Game(10, 10, 0);
+      var field = game.GetField();
+      var actualNumberOfMinesInField = 0;
+      for (int i = 0; i < 10; i++)
       {
-        for (int j = 0; j < 30; j++)
+        for (int j = 0; j < 10 ; j++)
         {
-          if (mineField[i, j] == CellContents.Mine)
+          if (field[i, j] == CellContents.Mine)
           {
             actualNumberOfMinesInField++;
           }
         }
-      }
-      Assert.Equal(20, actualNumberOfMinesInField);
-    }
 
+        Assert.Equal(0, actualNumberOfMinesInField);
+      }
+    }
+      [Fact]
+      public void CanInitializeFieldWithRowColumnDimensionsAndCustomNumberOfMines()
+      {
+        var game = new Game(20, 30, 20);
+        var mineField = game.GetField();
+        int actualNumberOfMinesInField = 0;
+
+        for (int i = 0; i < 20; i++)
+        {
+          for (int j = 0; j < 30; j++)
+          {
+            if (mineField[i, j] == CellContents.Mine)
+            {
+              actualNumberOfMinesInField++;
+            }
+          }
+        }
+        Assert.Equal(20, actualNumberOfMinesInField);
+      }
+
+    }
   }
-}
