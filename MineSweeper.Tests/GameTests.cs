@@ -34,7 +34,7 @@ namespace MineSweeper.Tests
       }
     }
       [Fact]
-      public void CanInitializeFieldWithRowColumnDimensionsAndCustomNumberOfMines()
+      public void CanInitializeFieldWithCustomNumberOfMines()
       {
         var game = new Game(20, 30, 20);
         var mineField = game.GetField();

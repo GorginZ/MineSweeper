@@ -36,11 +36,13 @@ namespace MineSweeper
     private HashSet<RowColumn> GetRandomIndexesForMines()
     {
       HashSet<RowColumn> mines = new HashSet<RowColumn>();
-      for (int i = _numberOfMines; i != 0; i--)
+      for (int i = 0; i < _numberOfMines; i++)
       {
         var rnd = new Random();
-        int rndRow = rnd.Next(0, _field.GetLength(0));
-        int rndCol = rnd.Next(0, _field.GetLength(1));
+        int rndRow = rnd.Next(0, _field.GetLength(0) + 1);
+        int rndCol = rnd.Next(0, _field.GetLength(1) + 1);
+//duplicates
+//bc a set, it will not add a duplicate. so could come short one or two mines
         mines.Add(new RowColumn(rndRow, rndCol));
       }
       return mines;
