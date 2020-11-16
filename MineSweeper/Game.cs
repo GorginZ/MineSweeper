@@ -14,7 +14,7 @@ namespace MineSweeper
     {
       _field = new SquareType[rowDimension, columnDimension];
       _numberOfMines = numberOfMines;
-      _minePlacementGeneration = minePlacementGeneration; 
+      _minePlacementGeneration = minePlacementGeneration;
       InitializeField();
     }
 
@@ -35,6 +35,18 @@ namespace MineSweeper
         _field[index.Row, index.Column] = SquareType.Mine;
       }
     }
+    public HashSet<RowColumn> GetClues(RowColumn userSquareSelection)
+    {
+    
 
+
+      HashSet<RowColumn> clues;
+      return clues;
+    }
+
+    public bool IsMine(RowColumn index)
+    {
+      return Equals(SquareType.Mine, _field[index.Row, index.Column]);
+    }
   }
 }
