@@ -36,21 +36,22 @@ namespace MineSweeper.Tests
       [Fact]
       public void CanInitializeFieldWithCustomNumberOfMines()
       {
-        var game = new Game(20, 30, 20);
+        var game = new Game(5, 5, 25);
         var mineField = game.GetField();
         int actualNumberOfMinesInField = 0;
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 5; i++)
         {
-          for (int j = 0; j < 30; j++)
+          for (int j = 0; j < 5; j++)
           {
             if (mineField[i, j] == CellContents.Mine)
             {
               actualNumberOfMinesInField++;
+
             }
           }
         }
-        Assert.Equal(20, actualNumberOfMinesInField);
+        Assert.Equal(25, actualNumberOfMinesInField);
       }
 
     }
