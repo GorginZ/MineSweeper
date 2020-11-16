@@ -1,6 +1,3 @@
-
-using System.Collections.Generic;
-
 namespace MineSweeper
 {
   public struct RowColumn
