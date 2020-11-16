@@ -6,53 +6,51 @@ namespace MineSweeper.Tests
   public class GameTests
   {
     [Fact]
-    public void MineFieldCellsAreEitherSafeOrMine()
+    public void MineFieldIsOfSpecifiedDimensions()
     {
-      var game = new Game(1, 2, 1);
+      var minePlacement = new RandomMinePlacement();
+      var game = new Game(1, 2, 1, minePlacement);
       var field = game.GetField();
-      Assert.True(field[0, 0] == CellContents.Safe || field[0, 0] == CellContents.Mine);
-      Assert.True(field[0, 1] == CellContents.Safe || field[0, 1] == CellContents.Mine);
-
+      Assert.True(field.GetLength(0) == 1);
+      Assert.True(field.GetLength(1) == 2);
     }
+
     [Fact]
     public void CanMakeSafeField()
     {
-      var game = new Game(10, 10, 0);
-      var field = game.GetField();
-      var actualNumberOfMinesInField = 0;
-      for (int i = 0; i < 10; i++)
+      var minePlacement = new RandomMinePlacement();
+      var game = new Game(10, 10, 0, minePlacement);
+      var mineField = game.GetField();
+      var actualNumberOfMinesInField = NumberOfMinesInField(10, 10, mineField);
+      Assert.Equal(0, actualNumberOfMinesInField);
+    }
+
+    [Fact]
+    public void CanInitializeFieldWithCustomNumberOfMines()
+    {
+      var minePlacement = new RandomMinePlacement();
+      var game = new Game(5, 5, 25, minePlacement);
+      var mineField = game.GetField();
+      int actualNumberOfMinesInField = NumberOfMinesInField(5, 5, mineField);
+
+      Assert.Equal(25, actualNumberOfMinesInField);
+    }
+    private int NumberOfMinesInField(int rows, int columns, SquareType[,] field)
+    {
+      int actualNumberOfMinesInField = 0;
+      for (int i = 0; i < rows; i++)
       {
-        for (int j = 0; j < 10 ; j++)
+        for (int j = 0; j < columns; j++)
         {
-          if (field[i, j] == CellContents.Mine)
+          if (field[i, j] == SquareType.Mine)
           {
             actualNumberOfMinesInField++;
           }
         }
-
-        Assert.Equal(0, actualNumberOfMinesInField);
       }
+      return actualNumberOfMinesInField;
     }
-      [Fact]
-      public void CanInitializeFieldWithCustomNumberOfMines()
-      {
-        var game = new Game(5, 5, 25);
-        var mineField = game.GetField();
-        int actualNumberOfMinesInField = 0;
 
-        for (int i = 0; i < 5; i++)
-        {
-          for (int j = 0; j < 5; j++)
-          {
-            if (mineField[i, j] == CellContents.Mine)
-            {
-              actualNumberOfMinesInField++;
 
-            }
-          }
-        }
-        Assert.Equal(25, actualNumberOfMinesInField);
-      }
-
-    }
   }
+}

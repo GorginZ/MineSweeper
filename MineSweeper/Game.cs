@@ -6,49 +6,34 @@ namespace MineSweeper
 {
   public class Game
   {
-    private CellContents[,] _field;
+    private SquareType[,] _field;
     private int _numberOfMines;
+    private IMinePlacementGeneration _minePlacementGeneration;
 
-    public Game(int rowDimension, int columnDimension, int numberOfMines)
+    public Game(int rowDimension, int columnDimension, int numberOfMines, IMinePlacementGeneration minePlacementGeneration)
     {
-      _field = new CellContents[rowDimension, columnDimension];
+      _field = new SquareType[rowDimension, columnDimension];
       _numberOfMines = numberOfMines;
+      _minePlacementGeneration = minePlacementGeneration; 
       InitializeField();
     }
 
-    public CellContents[,] GetField()
+    public SquareType[,] GetField()
     {
       return _field;
     }
 
     private void InitializeField()
     {
-      HashSet<RowColumn> mines = GetRandomIndexesForMines();
+      HashSet<RowColumn> mines = _minePlacementGeneration.GetMinePositions(_field.GetLength(0), _field.GetLength(1), _numberOfMines);
       PlaceMines(mines);
     }
     private void PlaceMines(HashSet<RowColumn> mines)
     {
       foreach (RowColumn index in mines)
       {
-        _field[index.Row, index.Column] = CellContents.Mine;
+        _field[index.Row, index.Column] = SquareType.Mine;
       }
-    }
-    private HashSet<RowColumn> GetRandomIndexesForMines()
-    {
-      var rnd = new Random();
-      HashSet<RowColumn> mines = new HashSet<RowColumn>();
-
-      for (int i = 0; i < _numberOfMines;)
-      {
-        int rndRow = rnd.Next(0, _field.GetLength(0));
-        int rndCol = rnd.Next(0, _field.GetLength(1));
-        if (!mines.Contains(new RowColumn(rndRow, rndCol)))
-        {
-          mines.Add(new RowColumn(rndRow, rndCol));
-          i++;
-        }
-      }
-      return mines;
     }
 
   }
