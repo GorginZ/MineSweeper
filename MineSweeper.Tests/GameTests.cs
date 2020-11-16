@@ -8,7 +8,8 @@ namespace MineSweeper.Tests
     [Fact]
     public void MineFieldCellsAreEitherSafeOrMine()
     {
-      var game = new Game(1, 2, 1);
+      var minePlacement = new RandomMinePlacement();
+      var game = new Game(1, 2, 1, minePlacement);
       var field = game.GetField();
       Assert.True(field[0, 0] == CellContents.Safe || field[0, 0] == CellContents.Mine);
       Assert.True(field[0, 1] == CellContents.Safe || field[0, 1] == CellContents.Mine);
@@ -17,7 +18,8 @@ namespace MineSweeper.Tests
     [Fact]
     public void CanMakeSafeField()
     {
-      var game = new Game(10, 10, 0);
+      var minePlacement = new RandomMinePlacement();
+      var game = new Game(10, 10, 0, minePlacement);
       var field = game.GetField();
       var actualNumberOfMinesInField = 0;
       for (int i = 0; i < 10; i++)
@@ -36,7 +38,8 @@ namespace MineSweeper.Tests
       [Fact]
       public void CanInitializeFieldWithCustomNumberOfMines()
       {
-        var game = new Game(5, 5, 25);
+        var minePlacement = new RandomMinePlacement();
+        var game = new Game(5, 5, 25, minePlacement);
         var mineField = game.GetField();
         int actualNumberOfMinesInField = 0;
 
