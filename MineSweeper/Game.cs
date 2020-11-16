@@ -6,19 +6,19 @@ namespace MineSweeper
 {
   public class Game
   {
-    private CellContents[,] _field;
+    private SquareType[,] _field;
     private int _numberOfMines;
     private IMinePlacementGeneration _minePlacementGeneration;
 
     public Game(int rowDimension, int columnDimension, int numberOfMines, IMinePlacementGeneration minePlacementGeneration)
     {
-      _field = new CellContents[rowDimension, columnDimension];
+      _field = new SquareType[rowDimension, columnDimension];
       _numberOfMines = numberOfMines;
       _minePlacementGeneration = minePlacementGeneration; 
       InitializeField();
     }
 
-    public CellContents[,] GetField()
+    public SquareType[,] GetField()
     {
       return _field;
     }
@@ -32,7 +32,7 @@ namespace MineSweeper
     {
       foreach (RowColumn index in mines)
       {
-        _field[index.Row, index.Column] = CellContents.Mine;
+        _field[index.Row, index.Column] = SquareType.Mine;
       }
     }
 

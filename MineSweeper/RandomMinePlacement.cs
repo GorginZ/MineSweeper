@@ -3,25 +3,26 @@ using System.Collections.Generic;
 
 namespace MineSweeper
 {
-    public class RandomMinePlacement :IMinePlacementGeneration
-    {
-    public HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int _numberOfMines)
+  public class RandomMinePlacement : IMinePlacementGeneration
+  {
+    public HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines)
     {
       var rnd = new Random();
-      HashSet<RowColumn> mines = new HashSet<RowColumn>();
+      HashSet<RowColumn> minesPositions = new HashSet<RowColumn>();
 
-      for (int i = 0; i < _numberOfMines;)
+      for (int i = 0; i < numberOfMines;)
       {
         int rndRow = rnd.Next(0, rowDimension);
         int rndCol = rnd.Next(0, columnDimension);
-        if (!mines.Contains(new RowColumn(rndRow, rndCol)))
+        var mineLocation = new RowColumn(rndRow, rndCol);
+        if (!minesPositions.Contains(mineLocation))
         {
-          mines.Add(new RowColumn(rndRow, rndCol));
+          minesPositions.Add(mineLocation);
           i++;
         }
       }
-      return mines;
+      return minesPositions;
     }
-        
-    }
+
+  }
 }

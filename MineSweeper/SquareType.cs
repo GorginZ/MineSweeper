@@ -1,10 +1,10 @@
 namespace MineSweeper
 {
-  public enum CellContents
+  public enum SquareType
   {
     Safe,
-      Mine
+    Mine
 
-   
+
   }
 }
