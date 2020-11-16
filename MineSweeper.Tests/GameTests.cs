@@ -6,15 +6,13 @@ namespace MineSweeper.Tests
   public class GameTests
   {
     [Fact]
-    public void MineFieldCellsAreEitherSafeOrMine()
+    public void MineFieldIsOfSpecifiedDimensions()
     {
-      //size
       var minePlacement = new RandomMinePlacement();
       var game = new Game(1, 2, 1, minePlacement);
       var field = game.GetField();
-      Assert.True(field[0, 0] == SquareType.Safe || field[0, 0] == SquareType.Mine);
-      Assert.True(field[0, 1] == SquareType.Safe || field[0, 1] == SquareType.Mine);
-
+      Assert.True(field.GetLength(0) == 1);
+      Assert.True(field.GetLength(1) == 2);
     }
 
     [Fact]
@@ -25,7 +23,6 @@ namespace MineSweeper.Tests
       var mineField = game.GetField();
       var actualNumberOfMinesInField = NumberOfMinesInField(10, 10, mineField);
       Assert.Equal(0, actualNumberOfMinesInField);
-
     }
 
     [Fact]
@@ -50,7 +47,6 @@ namespace MineSweeper.Tests
             actualNumberOfMinesInField++;
           }
         }
-
       }
       return actualNumberOfMinesInField;
     }
