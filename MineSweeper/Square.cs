@@ -3,7 +3,7 @@ namespace MineSweeper
     public struct Square
     {
       public SquareType SquareType;
-      public int SquareValue;
+      public int SquareHintValue;
     // public Square(SquareType squareType, SquareValue squareValue)
     // {
     //   SquareType = squareType;

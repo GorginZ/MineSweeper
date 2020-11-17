@@ -22,7 +22,7 @@ namespace MineSweeper
     {
       HashSet<RowColumn> mines = _minePlacementGeneration.GetMinePositions(RowDimension, ColumnDimension, _numberOfMines);
       PlaceMines(mines);
-      SetClues();
+      SetSquareHintValues();
 
     }
     private void PlaceMines(HashSet<RowColumn> mines)
@@ -63,7 +63,7 @@ namespace MineSweeper
       }
       return count;
     }
-    private void SetClues()
+    private void SetSquareHintValues()
     {
       for (int row = 0; row < RowDimension; row++)
       {
@@ -71,7 +71,7 @@ namespace MineSweeper
         {
           HashSet<RowColumn> neighbours = GetNeighboursOfSquare(row, column);
           int value = AdjacentMineCount(neighbours);
-          Field[row, column].SquareValue = value;
+          Field[row, column].SquareHintValue = value;
         }
       }
     }
