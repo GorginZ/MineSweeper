@@ -37,18 +37,12 @@ namespace MineSweeper
         _field[index.Row, index.Column].SquareType = SquareType.Mine;
       }
     }
-    private void SetClues()
+
+    public bool IsMine(RowColumn index)
     {
-      for (int row = 0; row < _field.GetLength(0); row++)
-      {
-        for (int column = 0; column < _field.GetLength(1); column++)
-        {
-          HashSet<RowColumn> neighbours = GetNeighboursOfSquare(row, column);
-          int value = AdjacentMineCount(neighbours);
-          _field[row, column].SquareValue = value;
-        }
-      }
+      return SquareType.Mine == _field[index.Row, index.Column].SquareType;
     }
+
     public HashSet<RowColumn> GetNeighboursOfSquare(int row, int column)
     {
       var leftNeighbour = (column - 1);
@@ -60,9 +54,8 @@ namespace MineSweeper
 
         new RowColumn(row, rightNeighbour), new RowColumn(row, leftNeighbour), new RowColumn(upNeighbour, column), new RowColumn(downNeighbour, column), new RowColumn(upNeighbour, rightNeighbour), new RowColumn(upNeighbour, leftNeighbour), new RowColumn(downNeighbour, rightNeighbour), new RowColumn(downNeighbour, leftNeighbour)
         };
-    //  return neighbourList.Where(x => !OutOfRange(x)).ToHashSet();
-     neighbourList.RemoveWhere(OutOfRange);
-     return neighbourList;
+      neighbourList.RemoveWhere(OutOfRange);
+      return neighbourList;
     }
     private bool OutOfRange(RowColumn rowColumn)
     {
@@ -81,11 +74,18 @@ namespace MineSweeper
       }
       return count;
     }
-
-
-    public bool IsMine(RowColumn index)
+    private void SetClues()
     {
-      return SquareType.Mine == _field[index.Row, index.Column].SquareType;
+      for (int row = 0; row < _field.GetLength(0); row++)
+      {
+        for (int column = 0; column < _field.GetLength(1); column++)
+        {
+          HashSet<RowColumn> neighbours = GetNeighboursOfSquare(row, column);
+          int value = AdjacentMineCount(neighbours);
+          _field[row, column].SquareValue = value;
+        }
+      }
     }
+
   }
 }

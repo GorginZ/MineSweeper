@@ -44,6 +44,9 @@ namespace MineSweeper.Tests
       var game = new Game(5, 5, 25, minePlacement);
       var mineField = game.GetField();
 Assert.Equal(5, mineField[1,1].SquareValue);
+Assert.Equal(3,mineField[1,2].SquareValue);
+Assert.Equal(5, mineField[3,1].SquareValue);
+Assert.Equal(0, mineField[2,2].SquareValue);
     }
 
     private int NumberOfMinesInField(int rows, int columns, Square[,] field)
