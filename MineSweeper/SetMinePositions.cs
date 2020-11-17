@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace MineSweeper
 {
-  public class SetMinePlacement : IMinePlacementGeneration
+  public class SetMinePositions : IMinePositions
   {
   public HashSet<RowColumn> setListOfMines;
     
-    public SetMinePlacement(HashSet<RowColumn> hashSetOfMines)
+    public SetMinePositions(HashSet<RowColumn> hashSetOfMines)
     {
       setListOfMines = hashSetOfMines;
     }

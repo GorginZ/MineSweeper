@@ -8,19 +8,19 @@ namespace MineSweeper
     public int RowDimension;
     public int ColumnDimension;
     private int _numberOfMines;
-    private IMinePlacementGeneration _minePlacementGeneration;
-    public MineField(int rowDimension, int columnDimension, int numberOfMines, IMinePlacementGeneration minePlacementGeneration)
+    private IMinePositions _minePositioning;
+    public MineField(int rowDimension, int columnDimension, int numberOfMines, IMinePositions minePositioning)
     {
       Field = new Square[rowDimension, columnDimension];
       RowDimension = rowDimension;
       ColumnDimension = columnDimension;
       _numberOfMines = numberOfMines;
-      _minePlacementGeneration = minePlacementGeneration;
+      _minePositioning = minePositioning;
       InitializeField();
     }
     private void InitializeField()
     {
-      HashSet<RowColumn> mines = _minePlacementGeneration.GetMinePositions(RowDimension, ColumnDimension, _numberOfMines);
+      HashSet<RowColumn> mines = _minePositioning.GetMinePositions(RowDimension, ColumnDimension, _numberOfMines);
       PlaceMines(mines);
       SetSquareHintValues();
 
