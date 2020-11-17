@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MineSweeper
 {
-  public class RandomMinePlacement : IMinePlacementGeneration
+  public class RandomMinePositions : IMinePositions
   {
     public HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines)
     {

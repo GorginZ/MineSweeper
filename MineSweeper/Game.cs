@@ -6,34 +6,21 @@ namespace MineSweeper
 {
   public class Game
   {
-    private SquareType[,] _field;
-    private int _numberOfMines;
-    private IMinePlacementGeneration _minePlacementGeneration;
+    private MineField _field;
 
-    public Game(int rowDimension, int columnDimension, int numberOfMines, IMinePlacementGeneration minePlacementGeneration)
+    public Game(MineField field)
     {
-      _field = new SquareType[rowDimension, columnDimension];
-      _numberOfMines = numberOfMines;
-      _minePlacementGeneration = minePlacementGeneration; 
-      InitializeField();
+      _field = field;
     }
 
-    public SquareType[,] GetField()
+    public Square[,] GetField()
     {
-      return _field;
+      return _field.Field;
     }
 
-    private void InitializeField()
+    public bool IsMine(RowColumn index)
     {
-      HashSet<RowColumn> mines = _minePlacementGeneration.GetMinePositions(_field.GetLength(0), _field.GetLength(1), _numberOfMines);
-      PlaceMines(mines);
-    }
-    private void PlaceMines(HashSet<RowColumn> mines)
-    {
-      foreach (RowColumn index in mines)
-      {
-        _field[index.Row, index.Column] = SquareType.Mine;
-      }
+      return SquareType.Mine == _field.Field[index.Row, index.Column].SquareType;
     }
 
   }
