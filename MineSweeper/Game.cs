@@ -27,6 +27,7 @@ namespace MineSweeper
     {
       HashSet<RowColumn> mines = _minePlacementGeneration.GetMinePositions(_field.GetLength(0), _field.GetLength(1), _numberOfMines);
       PlaceMines(mines);
+      SetClues();
 
     }
     private void PlaceMines(HashSet<RowColumn> mines)
@@ -34,7 +35,6 @@ namespace MineSweeper
       foreach (RowColumn index in mines)
       {
         _field[index.Row, index.Column].SquareType = SquareType.Mine;
-        _field[index.Row, index.Column].SquareValue = SquareValue.Mine;
       }
     }
     private void SetClues()
@@ -43,16 +43,49 @@ namespace MineSweeper
       {
         for (int column = 0; column < _field.GetLength(1); column++)
         {
-          _field[row,column].CalculateNeighbours
-          CalculateNeighbouringValues.
+          HashSet<RowColumn> neighbours = GetNeighboursOfSquare(row, column);
+          int value = AdjacentMineCount(neighbours);
+          _field[row, column].SquareValue = value;
         }
       }
+    }
+    public HashSet<RowColumn> GetNeighboursOfSquare(int row, int column)
+    {
+      var leftNeighbour = (column - 1);
+      var rightNeighbour = (column + 1);
+      var upNeighbour = (row - 1);
+      var downNeighbour = (row + 1);
+
+      HashSet<RowColumn> neighbourList = new HashSet<RowColumn>{
+
+        new RowColumn(row, rightNeighbour), new RowColumn(row, leftNeighbour), new RowColumn(upNeighbour, column), new RowColumn(downNeighbour, column), new RowColumn(upNeighbour, rightNeighbour), new RowColumn(upNeighbour, leftNeighbour), new RowColumn(downNeighbour, rightNeighbour), new RowColumn(downNeighbour, leftNeighbour)
+        };
+    //  return neighbourList.Where(x => !OutOfRange(x)).ToHashSet();
+     neighbourList.RemoveWhere(OutOfRange);
+     return neighbourList;
+    }
+    private bool OutOfRange(RowColumn rowColumn)
+    {
+      return rowColumn.Row < 0 || rowColumn.Row >= _field.GetLength(0) || rowColumn.Column < 0 || rowColumn.Column >= _field.GetLength(1);
+    }
+    public int AdjacentMineCount(HashSet<RowColumn> neighbourList)
+    {
+      int count = 0;
+
+      foreach (RowColumn index in neighbourList)
+      {
+        if (IsMine(index))
+        {
+          count++;
+        }
+      }
+      return count;
     }
 
 
     public bool IsMine(RowColumn index)
     {
-      return Equals(SquareType.Mine, _field[index.Row, index.Column]);
+      return SquareType.Mine == _field[index.Row, index.Column].SquareType;
     }
   }
 }
