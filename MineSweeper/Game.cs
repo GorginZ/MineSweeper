@@ -8,17 +8,15 @@ namespace MineSweeper
   {
     private MineField _field;
 
-    public Game(int rowDimension, int columnDimension, int numberOfMines, IMinePlacementGeneration minePlacementGeneration)
+    public Game(MineField field)
     {
-      _field = new MineField(rowDimension, columnDimension, numberOfMines, minePlacementGeneration);
+      _field = field;
     }
 
     public Square[,] GetField()
     {
       return _field.Field;
     }
-
-
 
     public bool IsMine(RowColumn index)
     {

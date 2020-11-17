@@ -12,6 +12,8 @@ namespace MineSweeper
     public MineField(int rowDimension, int columnDimension, int numberOfMines, IMinePlacementGeneration minePlacementGeneration)
     {
       Field = new Square[rowDimension, columnDimension];
+      RowDimension = rowDimension;
+      ColumnDimension = columnDimension;
       _numberOfMines = numberOfMines;
       _minePlacementGeneration = minePlacementGeneration;
       InitializeField();
