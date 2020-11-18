@@ -14,13 +14,12 @@ namespace MineSweeper.ConsoleImplementation
     {
       var printableField = new StringBuilder();
 
-      for (int i = 0; i < mineField.RowDimension - 1; i++)
+      for (int i = 0; i < mineField.RowDimension; i++)
       {
         for (int j = 0; j < mineField.ColumnDimension; j++)
         {
-          var coordinate = new RowColumn(i, j);
 
-          printableField.Append(SquareAsString(mineField.Field[coordinate.Row, coordinate.Column]));
+          printableField.Append(SquareAsString(mineField.Field[i,j]));
         }
         printableField.Append("\n");
       }
@@ -30,12 +29,12 @@ namespace MineSweeper.ConsoleImplementation
     {
       if (square.SquareType == SquareType.Safe)
       {
-        return square.SquareHintValue.ToString();
+        var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (" ");
+        return squareSymbol;
       }
       else
       {
         return "*";
-
       }
     }
 
