@@ -25,7 +25,7 @@ namespace MineSweeper.Tests
     }
 
     [Fact]
-    public void CanPlaceCustomNumberOfMines()
+    public void CanAlwaysAllocatePositionsForFullNumberOfMines()
     {
       var minePlacement = new RandomMinePositions();
       var field = new MineField(5,5,25, minePlacement);

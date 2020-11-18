@@ -7,6 +7,10 @@ namespace MineSweeper
   {
     public HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines)
     {
+      if (numberOfMines > (rowDimension * columnDimension))
+      {
+        throw new System.ArgumentException("numberOfMines exceeds array dimensions", $"{numberOfMines}");
+      }
       var rnd = new Random();
       HashSet<RowColumn> minesPositions = new HashSet<RowColumn>();
 
