@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MineSweeper
 {
   public class MineField
   {
     public Square[,] Field;
+
     public int RowDimension;
     public int ColumnDimension;
+
     private int _numberOfMines;
     private IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, int numberOfMines, IMinePositions minePositioning)
@@ -17,10 +20,11 @@ namespace MineSweeper
       _numberOfMines = numberOfMines;
       _minePositioning = minePositioning;
       InitializeField();
+
     }
     private void InitializeField()
     {
-      HashSet<RowColumn> mines = _minePositioning.GetMinePositions(RowDimension, ColumnDimension, _numberOfMines);
+      HashSet<RowColumn> mines = _minePositioning.GetMinePositions();
       PlaceMines(mines);
       SetSquareHintValues();
 
@@ -76,8 +80,8 @@ namespace MineSweeper
       }
     }
 
-    
-    
+
+
 
   }
 }

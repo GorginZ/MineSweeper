@@ -75,3 +75,80 @@ namespace MineSweeper
 }
 ```
 
+Error Handling
+
+```C#
+   [Fact]
+    public void WillThrowArgumentExceptionIfNumberOfMineArgumentExceedsTheRowColumnArguments()
+    {
+      var minePositions = new RandomMinePositions();
+      var ex = Assert.Throws<System.ArgumentException>(() => minePositions.GetMinePositions(3, 3, 10));
+
+      Assert.Equal("numberOfMines exceeds array dimensions (Parameter '10')", ex.Message);
+
+    }
+```
+
+```C#
+ public HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines)
+    {
+      if (numberOfMines > (rowDimension * columnDimension))
+      {
+        throw new System.ArgumentException("numberOfMines exceeds array dimensions", $"{numberOfMines}");
+      }
+      var rnd = new Random();
+      HashSet<RowColumn> minesPositions = new HashSet<RowColumn>();
+
+      for (int i = 0; i < numberOfMines;)
+      {
+        int rndRow = rnd.Next(0, rowDimension);
+        int rndCol = rnd.Next(0, columnDimension);
+        var mineLocation = new RowColumn(rndRow, rndCol);
+        if (!minesPositions.Contains(mineLocation))
+        {
+          minesPositions.Add(mineLocation);
+          i++;
+        }
+      }
+      return minesPositions;
+    }
+```
+
+Clear Intent
+
+
+
+```C#
+using System.Collections.Generic;
+
+namespace MineSweeper
+{
+  //this class isn't clear and has confused behaviour. arbitrary arguments for its implementation of getminepositions member
+  public class SetMinePositions : IMinePositions
+  {
+  public HashSet<RowColumn> setListOfMines;
+    public SetMinePositions(HashSet<RowColumn> hashSetOfMines)
+    {
+      setListOfMines = hashSetOfMines;
+    }
+    public HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines)
+    {
+
+      return setListOfMines;
+    }
+  }
+}
+```
+
+```C#
+using System.Collections.Generic;
+
+namespace MineSweeper
+{
+    public interface IMinePositions
+    {
+        HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines); 
+    }
+}
+```
+
