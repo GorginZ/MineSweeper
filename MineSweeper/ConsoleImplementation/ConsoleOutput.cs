@@ -31,7 +31,7 @@ namespace MineSweeper.ConsoleImplementation
     {
       if (square.SquareType == SquareType.Safe)
       {
-        var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (" ");
+        var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (".");
         return squareSymbol;
       }
       else
