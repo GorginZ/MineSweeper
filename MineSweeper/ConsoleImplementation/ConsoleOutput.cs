@@ -18,8 +18,10 @@ namespace MineSweeper.ConsoleImplementation
       {
         for (int j = 0; j < mineField.ColumnDimension; j++)
         {
+          var squareSymbol = mineField.Field[i, j].Revealed ? (SquareAsString(mineField.Field[i, j])) : (" ");
 
-          printableField.Append(SquareAsString(mineField.Field[i,j]));
+          printableField.Append(squareSymbol);
+
         }
         printableField.Append("\n");
       }
