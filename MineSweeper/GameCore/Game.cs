@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MineSweeper
 {
@@ -18,10 +19,36 @@ namespace MineSweeper
       return _field.Field;
     }
 
-    public bool IsMine(RowColumn index)
+    public static string FieldAsString(MineField mineField)
     {
-      return SquareType.Mine == _field.Field[index.Row, index.Column].SquareType;
+      var printableField = new StringBuilder();
+
+      for (int i = 0; i < mineField.RowDimension; i++)
+      {
+        for (int j = 0; j < mineField.ColumnDimension; j++)
+        {
+          var squareSymbol = mineField.Field[i, j].Revealed ? (SquareAsString(mineField.Field[i, j])) : (" ");
+
+          printableField.Append(squareSymbol);
+
+        }
+        printableField.Append("\n");
+      }
+      return printableField.ToString();
     }
+    public static string SquareAsString(Square square)
+    {
+      if (square.SquareType == SquareType.Safe)
+      {
+        var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (".");
+        return squareSymbol;
+      }
+      else
+      {
+        return "*";
+      }
+    }
+
 
   }
 }
