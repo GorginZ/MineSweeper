@@ -4,5 +4,6 @@ namespace MineSweeper
     {
       public SquareType SquareType;
       public int SquareHintValue;
+      public bool Revealed;
     }
 }
