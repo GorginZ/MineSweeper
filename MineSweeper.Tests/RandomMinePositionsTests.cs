@@ -8,8 +8,8 @@ namespace MineSweeper.Tests
     [Fact]
     public void WillThrowArgumentExceptionIfNumberOfMineArgumentExceedsTheRowColumnArguments()
     {
-      var minePositions = new RandomMinePositions();
-      var ex = Assert.Throws<System.ArgumentException>(() => minePositions.GetMinePositions(3, 3, 10));
+      var minePositions = new RandomMinePositions(3,3,10);
+      var ex = Assert.Throws<System.ArgumentException>(() => minePositions.GetMinePositions());
 
       Assert.Equal("numberOfMines exceeds array dimensions (Parameter '10')", ex.Message);
 

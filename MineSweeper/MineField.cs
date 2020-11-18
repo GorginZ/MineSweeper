@@ -8,8 +8,6 @@ namespace MineSweeper
     public Square[,] Field;
 
     public int RowDimension;
-
-
     public int ColumnDimension;
 
     private int _numberOfMines;
@@ -26,7 +24,7 @@ namespace MineSweeper
     }
     private void InitializeField()
     {
-      HashSet<RowColumn> mines = _minePositioning.GetMinePositions(RowDimension, ColumnDimension, _numberOfMines);
+      HashSet<RowColumn> mines = _minePositioning.GetMinePositions();
       PlaceMines(mines);
       SetSquareHintValues();
 
