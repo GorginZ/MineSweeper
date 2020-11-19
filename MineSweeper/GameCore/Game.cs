@@ -8,10 +8,12 @@ namespace MineSweeper
   public class Game
   {
     private MineField _field;
+    private HashSet<RowColumn> _revealed;
 
     public Game(MineField field)
     {
       _field = field;
+      _revealed = new HashSet<RowColumn>();
     }
 
     public Square[,] GetField()
@@ -19,18 +21,16 @@ namespace MineSweeper
       return _field.Field;
     }
 
-    public static string FieldAsString(MineField mineField)
+    public string FieldAsString()
     {
       var printableField = new StringBuilder();
 
-      for (int i = 0; i < mineField.RowDimension; i++)
+      for (int i = 0; i < _field.RowDimension; i++)
       {
-        for (int j = 0; j < mineField.ColumnDimension; j++)
+        for (int j = 0; j < _field.ColumnDimension; j++)
         {
-          var squareSymbol = mineField.Field[i, j].Revealed ? (SquareAsString(mineField.Field[i, j])) : (" ");
-
+          var squareSymbol = _revealed.Contains(new RowColumn(i,j)) ? (SquareAsString(_field.Field[i, j])) : (" ");
           printableField.Append(squareSymbol);
-
         }
         printableField.Append("\n");
       }

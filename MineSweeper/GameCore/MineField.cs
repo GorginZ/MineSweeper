@@ -36,7 +36,7 @@ namespace MineSweeper
       {
         for (int column = 0; column < ColumnDimension; column++)
         {
-          Field[row, column] = new Square(SquareType.Safe, 0, false);
+          Field[row, column] = new Square(SquareType.Safe, 0);
         }
       }
     }
