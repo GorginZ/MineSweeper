@@ -29,7 +29,7 @@ namespace MineSweeper
       {
         for (int j = 0; j < _field.ColumnDimension; j++)
         {
-          var squareSymbol = _revealed.Contains(new RowColumn(i,j)) ? (SquareAsString(_field.Field[i, j])) : (" ");
+          var squareSymbol = _revealed.Contains(new RowColumn(i, j)) ? (SquareAsString(_field.Field[i, j])) : (" ");
           printableField.Append(squareSymbol);
         }
         printableField.Append("\n");
@@ -48,7 +48,39 @@ namespace MineSweeper
         return "*";
       }
     }
+    //this is an infinite loop that won't do much fix in morning
+    public void ProcessTurn(RowColumn selectedSquare)
+    {
+      HashSet<RowColumn> squaresOfInterest = new HashSet<RowColumn>();
+      do
+      {
+        if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
+        {
+          HashSet<RowColumn> adjacentSquares = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
+          _revealed.Add(selectedSquare);
+          _revealed.UnionWith(adjacentSquares);
+
+          foreach (RowColumn index in adjacentSquares)
+          {
+            if (_field.Field[index.Row, index.Column].SquareHintValue == 0)
+            {
+              squaresOfInterest.Add(index);
+            }
+
+          }
+        }
+
+      } while (squaresOfInterest.Count > 0);
 
 
+    }
+    public void UpdateVisability()
+    {
+
+    }
+    public bool IsMine(RowColumn index)
+    {
+      return SquareType.Mine == _field.Field[index.Row, index.Column].SquareType;
+    }
   }
 }
