@@ -1,9 +1,17 @@
 namespace MineSweeper
 {
-    public struct Square
+  public class Square
+  {
+    public SquareType SquareType;
+    public int SquareHintValue;
+    public bool Revealed;
+    public Square(SquareType squareType, int hintValue, bool revealed)
     {
-      public SquareType SquareType;
-      public int SquareHintValue;
-      public bool Revealed;
+      SquareType = squareType;
+      SquareHintValue = hintValue;
+      Revealed = revealed;
     }
+
+
+  }
 }
