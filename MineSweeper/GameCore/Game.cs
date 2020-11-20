@@ -48,9 +48,9 @@ namespace MineSweeper
         return "*";
       }
     }
-    public HashSet<RowColumn> FindEmptySquaresAdjacentToThisEmptySquare(RowColumn emptySquare, out bool FoundSquares)
+    public HashSet<RowColumn> FindEmptySquaresAdjacentToThisEmptySquare(RowColumn emptySquare, out bool hasEmptyNeighbours)
     {
-      FoundSquares = false;
+      hasEmptyNeighbours = false;
       HashSet<RowColumn> emptySquares = new HashSet<RowColumn> { emptySquare };
       HashSet<RowColumn> adjacentSquares = _field.GetNeighboursOfSquare(emptySquare.Row, emptySquare.Column);
       foreach (RowColumn index in adjacentSquares)
@@ -58,45 +58,24 @@ namespace MineSweeper
         if (_field.Field[index.Row, index.Column].SquareHintValue == 0)
         {
           emptySquares.Add(index);
-          FoundSquares = true;
+          hasEmptyNeighbours = true;
         }
       }
-
-      return emptySquares;
-    }
-    public HashSet<RowColumn> EmptySquareProcess(RowColumn emptySquare)
-    {
-      bool stillFindingSquares = false;
-      var newSquares = new HashSet<RowColumn>();
-      var emptySquares = FindEmptySquaresAdjacentToThisEmptySquare(emptySquare, out bool FoundSquares);
-      do
-      {
-        foreach (RowColumn square in emptySquares)
-        {
-          newSquares = FindEmptySquaresAdjacentToThisEmptySquare(square, out bool foundSquares);
-          stillFindingSquares = foundSquares;
-        }
-        emptySquares.UnionWith(newSquares);
-
-      } while (newSquares.Count != emptySquares.Count);
       return emptySquares;
     }
 
-    public void UpdateVisability(HashSet<RowColumn> emptySquares)
-    {
-      _revealed.UnionWith(emptySquares);
-      foreach (RowColumn emptySquare in emptySquares)
-      {
-        _revealed.UnionWith(_field.GetNeighboursOfSquare(emptySquare.Row, emptySquare.Column));
-      }
-    }
     public void ProcessSquareSelection(RowColumn selectedSquare)
     {
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
       {
-        var squaresToReveal = EmptySquareProcess(selectedSquare);
-        UpdateVisability(squaresToReveal);
+        RevealNeighboursOfEmptySquare(selectedSquare);
       }
+
+    }
+    public void RevealNeighboursOfEmptySquare(RowColumn selectedSquare)
+    {
+      _revealed.Add(selectedSquare);
+      _revealed.UnionWith(_field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column));
     }
     public bool IsMine(RowColumn index)
     {
