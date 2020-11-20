@@ -63,7 +63,30 @@ namespace MineSweeper
       }
       return emptySquares;
     }
+    public void SelectSquare(RowColumn selectedSquare)
+    {
+      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
+      {
+        RevealNeighboursOfEmptySquare(selectedSquare);
+        var neighboursOfSquare = FindEmptySquaresAdjacentToThisEmptySquare(selectedSquare, out bool foundMoreEmpty);
+        if (foundMoreEmpty)
+        {
+          foreach (RowColumn square in neighboursOfSquare)
+          {
+            RevealNeighboursOfEmptySquare(square);
+          }
+        }
 
+      }
+      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareType == SquareType.Safe)
+      {
+        RevealSquare(selectedSquare);
+      }
+    }
+    public void RevealSquare(RowColumn selectedSquare)
+    {
+      _revealed.Add(selectedSquare);
+    }
     public void ProcessSquareSelection(RowColumn selectedSquare)
     {
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)

@@ -30,6 +30,7 @@ namespace MineSweeper.Tests
                         + "     \n"
                         + "   2 \n"
                         + "     \n";
+      game.SelectSquare(new RowColumn(3, 3));
       Assert.Equal(expectedField, game.FieldAsString());
 
     }
@@ -44,7 +45,7 @@ namespace MineSweeper.Tests
                         + "   1.\n"
                         + "   21\n"
                         + "     \n";
-      game.ProcessSquareSelection(new RowColumn(0, 4));
+      game.SelectSquare(new RowColumn(0, 4));
       Assert.Equal(expectedField, game.FieldAsString());
 
     }
