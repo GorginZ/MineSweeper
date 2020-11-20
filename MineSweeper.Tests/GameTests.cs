@@ -44,7 +44,7 @@ namespace MineSweeper.Tests
                         + "   1.\n"
                         + "   21\n"
                         + "     \n";
-      game.FindEmptySquaresAdjacentToThisEmptySquare(new RowColumn(0, 4));
+      game.ProcessSquareSelection(new RowColumn(0, 4));
       Assert.Equal(expectedField, game.FieldAsString());
 
     }

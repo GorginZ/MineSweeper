@@ -67,16 +67,18 @@ namespace MineSweeper
     public HashSet<RowColumn> EmptySquareProcess(RowColumn emptySquare)
     {
       bool stillFindingSquares = false;
+      var newSquares = new HashSet<RowColumn>();
       var emptySquares = FindEmptySquaresAdjacentToThisEmptySquare(emptySquare, out bool FoundSquares);
       do
       {
         foreach (RowColumn square in emptySquares)
         {
-          emptySquares.UnionWith(FindEmptySquaresAdjacentToThisEmptySquare(square, out bool foundSquares));
+          newSquares = FindEmptySquaresAdjacentToThisEmptySquare(square, out bool foundSquares);
           stillFindingSquares = foundSquares;
         }
+        emptySquares.UnionWith(newSquares);
 
-      } while (stillFindingSquares);
+      } while (newSquares.Count != emptySquares.Count);
       return emptySquares;
     }
 
@@ -88,11 +90,12 @@ namespace MineSweeper
         _revealed.UnionWith(_field.GetNeighboursOfSquare(emptySquare.Row, emptySquare.Column));
       }
     }
-    public void ProcessSquare(RowColumn selectedSquare)
+    public void ProcessSquareSelection(RowColumn selectedSquare)
     {
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
       {
-        EmptySquareProcess(selectedSquare);
+        var squaresToReveal = EmptySquareProcess(selectedSquare);
+        UpdateVisability(squaresToReveal);
       }
     }
     public bool IsMine(RowColumn index)
