@@ -48,39 +48,52 @@ namespace MineSweeper
         return "*";
       }
     }
-    public void ProcessTurn(RowColumn selectedSquare)
+    public HashSet<RowColumn> FindEmptySquaresAdjacentToThisEmptySquare(RowColumn emptySquare, out bool FoundSquares)
     {
-      HashSet<RowColumn> squaresOfInterest = new HashSet<RowColumn>();
-      do
-      {
-        if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
-        {
-          HashSet<RowColumn> adjacentSquares = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
-          _revealed.Add(selectedSquare);
-          _revealed.UnionWith(adjacentSquares);
-          squaresOfInterest.UnionWith(EmptySquareProcess(adjacentSquares));
-        }
-        _revealed.UnionWith(squaresOfInterest);
-      } while (!squaresOfInterest.IsSubsetOf(_revealed));
-    }
-    public HashSet<RowColumn> EmptySquareProcess(HashSet<RowColumn> adjacentSquares)
-    {
-      _revealed.UnionWith(adjacentSquares);
-      HashSet<RowColumn> squaresOfInterest = new HashSet<RowColumn>();
-
+      FoundSquares = false;
+      HashSet<RowColumn> emptySquares = new HashSet<RowColumn> { emptySquare };
+      HashSet<RowColumn> adjacentSquares = _field.GetNeighboursOfSquare(emptySquare.Row, emptySquare.Column);
       foreach (RowColumn index in adjacentSquares)
       {
         if (_field.Field[index.Row, index.Column].SquareHintValue == 0)
         {
-          squaresOfInterest.Add(index);
+          emptySquares.Add(index);
+          FoundSquares = true;
         }
       }
-      return squaresOfInterest;
+
+      return emptySquares;
+    }
+    public HashSet<RowColumn> EmptySquareProcess(RowColumn emptySquare)
+    {
+      bool stillFindingSquares = false;
+      var emptySquares = FindEmptySquaresAdjacentToThisEmptySquare(emptySquare, out bool FoundSquares);
+      do
+      {
+        foreach (RowColumn square in emptySquares)
+        {
+          emptySquares.UnionWith(FindEmptySquaresAdjacentToThisEmptySquare(square, out bool foundSquares));
+          stillFindingSquares = foundSquares;
+        }
+
+      } while (stillFindingSquares);
+      return emptySquares;
     }
 
-    public void UpdateVisability()
+    public void UpdateVisability(HashSet<RowColumn> emptySquares)
     {
-
+      _revealed.UnionWith(emptySquares);
+      foreach (RowColumn emptySquare in emptySquares)
+      {
+        _revealed.UnionWith(_field.GetNeighboursOfSquare(emptySquare.Row, emptySquare.Column));
+      }
+    }
+    public void ProcessSquare(RowColumn selectedSquare)
+    {
+      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
+      {
+        EmptySquareProcess(selectedSquare);
+      }
     }
     public bool IsMine(RowColumn index)
     {
