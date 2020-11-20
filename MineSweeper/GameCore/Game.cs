@@ -48,7 +48,6 @@ namespace MineSweeper
         return "*";
       }
     }
-    //this is an infinite loop that won't do much fix in morning
     public void ProcessTurn(RowColumn selectedSquare)
     {
       HashSet<RowColumn> squaresOfInterest = new HashSet<RowColumn>();
@@ -59,21 +58,26 @@ namespace MineSweeper
           HashSet<RowColumn> adjacentSquares = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
           _revealed.Add(selectedSquare);
           _revealed.UnionWith(adjacentSquares);
-
-          foreach (RowColumn index in adjacentSquares)
-          {
-            if (_field.Field[index.Row, index.Column].SquareHintValue == 0)
-            {
-              squaresOfInterest.Add(index);
-            }
-
-          }
+          squaresOfInterest.UnionWith(EmptySquareProcess(adjacentSquares));
         }
-
-      } while (squaresOfInterest.Count > 0);
-
-
+        _revealed.UnionWith(squaresOfInterest);
+      } while (!squaresOfInterest.IsSubsetOf(_revealed));
     }
+    public HashSet<RowColumn> EmptySquareProcess(HashSet<RowColumn> adjacentSquares)
+    {
+      _revealed.UnionWith(adjacentSquares);
+      HashSet<RowColumn> squaresOfInterest = new HashSet<RowColumn>();
+
+      foreach (RowColumn index in adjacentSquares)
+      {
+        if (_field.Field[index.Row, index.Column].SquareHintValue == 0)
+        {
+          squaresOfInterest.Add(index);
+        }
+      }
+      return squaresOfInterest;
+    }
+
     public void UpdateVisability()
     {
 

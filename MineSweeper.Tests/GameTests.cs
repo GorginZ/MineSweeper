@@ -36,7 +36,6 @@ namespace MineSweeper.Tests
     [Fact]
     public void RevealsAppropriateSquareHintValueWhenEmptySquareSelected()
     {
-      //var selection = 0,4
       var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
       var mineField = new MineField(5, 5, 5, minePositioning);
       var game = new Game(mineField);
@@ -45,6 +44,7 @@ namespace MineSweeper.Tests
                         + "   1.\n"
                         + "   21\n"
                         + "     \n";
+      game.ProcessTurn(new RowColumn(0, 4));
       Assert.Equal(expectedField, game.FieldAsString());
 
     }
