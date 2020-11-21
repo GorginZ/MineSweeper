@@ -4,7 +4,5 @@ namespace MineSweeper
   {
     Safe,
     Mine
-
-
   }
 }

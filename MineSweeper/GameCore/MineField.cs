@@ -24,11 +24,23 @@ namespace MineSweeper
     }
     private void InitializeField()
     {
+      FillFieldWithSquares();
       HashSet<RowColumn> mines = _minePositioning.GetMinePositions();
       PlaceMines(mines);
       SetSquareHintValues();
 
     }
+    private void FillFieldWithSquares()
+    {
+      for (int row = 0; row < RowDimension; row++)
+      {
+        for (int column = 0; column < ColumnDimension; column++)
+        {
+          Field[row, column] = new Square(SquareType.Safe, 0);
+        }
+      }
+    }
+
     private void PlaceMines(HashSet<RowColumn> mines)
     {
       foreach (RowColumn index in mines)
@@ -79,7 +91,6 @@ namespace MineSweeper
         }
       }
     }
-
 
 
 

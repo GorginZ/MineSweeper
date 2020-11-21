@@ -43,6 +43,11 @@ namespace MineSweeper.Tests
       Assert.Equal(5, field.Field[3, 1].SquareHintValue);
       Assert.Equal(0, field.Field[2, 2].SquareHintValue);
     }
+//     [Fact]
+//     public void SquaresHaveCorectSquareHintValueRandom()
+//     {
+// //inttegration test full reveal
+//     }
 
     private int NumberOfMinesInField(int rows, int columns, Square[,] field)
     {

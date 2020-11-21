@@ -114,7 +114,7 @@ Error Handling
     }
 ```
 
-Clear Intent
+#### Clear Intent
 
 
 
@@ -150,5 +150,43 @@ namespace MineSweeper
         HashSet<RowColumn> GetMinePositions(int rowDimension, int columnDimension, int numberOfMines); 
     }
 }
+```
+
+OOP
+
+Who is responsible for if the square is revealed?
+
+As thing stand my square is a class with a hintvalue and a square type, it had a bool on it 'revealed. 
+
+- when i decide to reveal clues and print the boadr is it faster/better to look into the board, look into it's square obj and ask are you revealed?
+  or 
+
+- have the game know which squares it has revealed as a hashset of rowcolumn indexes and when it looks through the field go, is this one on my list?.
+
+  I feel like seperaet list to decide what is and isn't revealed is more OOP.
+
+  This might also serve me better for the future - when the game ends i want o show the positions of all the mines - but no all the clues.  
+
+```c#
+  public string FieldAsString()
+    {
+      var printableField = new StringBuilder();
+
+      for (int i = 0; i < _field.RowDimension; i++)
+      {
+        for (int j = 0; j < _field.ColumnDimension; j++)
+        {
+
+          var squareSymbol = _revealed.Contains(new RowColumn(i,j)) ? (SquareAsString(_field.Field[i, j])) : (" ");
+
+          // var squareSymbol = _field.Field[i, j].Revealed ? (SquareAsString(_field.Field[i, j])) : (" ");
+
+          printableField.Append(squareSymbol);
+
+        }
+        printableField.Append("\n");
+      }
+      return printableField.ToString();
+    }
 ```
 

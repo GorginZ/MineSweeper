@@ -1,9 +1,9 @@
 namespace MineSweeper
 {
-  public struct RowColumn
+  public readonly struct RowColumn
   {
-    public int Row;
-    public int Column;
+    public readonly int Row;
+    public readonly int Column;
 
     public RowColumn(int row, int column)
     {
