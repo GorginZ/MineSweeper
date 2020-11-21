@@ -53,29 +53,29 @@ namespace MineSweeper
     {
       _revealed.Add(selectedSquare);
     }
-    public void ProcessSquareSelection(RowColumn selectedSquare)
+    public void ProcessReveal(RowColumn selectedSquare)
     {
       if (_revealed.Contains(selectedSquare))
       {
         return;
       }
-      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareType != SquareType.Mine || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
+      //make ternary
+      if (!IsMine(selectedSquare) || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
       {
         _revealed.Add(selectedSquare);
       }
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
       {
-        RevealNeighboursOfEmptySquare(selectedSquare);
+        ProcessRevealOfNeighboursOfEmptySquare(selectedSquare);
       }
 
     }
-    public void RevealNeighboursOfEmptySquare(RowColumn selectedSquare)
+    public void ProcessRevealOfNeighboursOfEmptySquare(RowColumn selectedSquare)
     {
       var neighbours = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
-
       foreach (RowColumn index in neighbours)
       {
-        ProcessSquareSelection(index);
+        ProcessReveal(index);
       }
     }
     public bool IsMine(RowColumn index)
