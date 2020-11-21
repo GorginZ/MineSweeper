@@ -48,47 +48,21 @@ namespace MineSweeper
         return "*";
       }
     }
-    public HashSet<RowColumn> FindEmptySquaresAdjacentToThisEmptySquare(RowColumn emptySquare, out bool hasEmptyNeighbours)
-    {
-      hasEmptyNeighbours = false;
-      HashSet<RowColumn> emptySquares = new HashSet<RowColumn> { emptySquare };
-      HashSet<RowColumn> adjacentSquares = _field.GetNeighboursOfSquare(emptySquare.Row, emptySquare.Column);
-      foreach (RowColumn index in adjacentSquares)
-      {
-        if (_field.Field[index.Row, index.Column].SquareHintValue == 0)
-        {
-          emptySquares.Add(index);
-          hasEmptyNeighbours = true;
-        }
-      }
-      return emptySquares;
-    }
-    public void SelectSquare(RowColumn selectedSquare)
-    {
-      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
-      {
-        RevealNeighboursOfEmptySquare(selectedSquare);
-        var neighboursOfSquare = FindEmptySquaresAdjacentToThisEmptySquare(selectedSquare, out bool foundMoreEmpty);
-        if (foundMoreEmpty)
-        {
-          foreach (RowColumn square in neighboursOfSquare)
-          {
-            RevealNeighboursOfEmptySquare(square);
-          }
-        }
 
-      }
-      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareType == SquareType.Safe)
-      {
-        RevealSquare(selectedSquare);
-      }
-    }
     public void RevealSquare(RowColumn selectedSquare)
     {
       _revealed.Add(selectedSquare);
     }
     public void ProcessSquareSelection(RowColumn selectedSquare)
     {
+      if (_revealed.Contains(selectedSquare))
+      {
+        return;
+      }
+      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareType != SquareType.Mine || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
+      {
+        _revealed.Add(selectedSquare);
+      }
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
       {
         RevealNeighboursOfEmptySquare(selectedSquare);
@@ -97,8 +71,12 @@ namespace MineSweeper
     }
     public void RevealNeighboursOfEmptySquare(RowColumn selectedSquare)
     {
-      _revealed.Add(selectedSquare);
-      _revealed.UnionWith(_field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column));
+      var neighbours = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
+
+      foreach (RowColumn index in neighbours)
+      {
+        ProcessSquareSelection(index);
+      }
     }
     public bool IsMine(RowColumn index)
     {
