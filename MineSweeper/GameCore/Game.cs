@@ -48,18 +48,16 @@ namespace MineSweeper
         return "*";
       }
     }
-
-    public void RevealSquare(RowColumn selectedSquare)
+    public void HandleSelectedSquare(RowColumn selectedSquare)
     {
-      _revealed.Add(selectedSquare);
-    }
-    public void ProcessReveal(RowColumn selectedSquare)
-    {
+      if (IsMine(selectedSquare))
+      {
+        FindAndRevealMines();
+      }
       if (_revealed.Contains(selectedSquare))
       {
         return;
       }
-      //make ternary
       if (!IsMine(selectedSquare) || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
       {
         _revealed.Add(selectedSquare);
@@ -68,19 +66,32 @@ namespace MineSweeper
       {
         ProcessRevealOfNeighboursOfEmptySquare(selectedSquare);
       }
-
     }
     public void ProcessRevealOfNeighboursOfEmptySquare(RowColumn selectedSquare)
     {
       var neighbours = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
       foreach (RowColumn index in neighbours)
       {
-        ProcessReveal(index);
+        HandleSelectedSquare(index);
       }
     }
     public bool IsMine(RowColumn index)
     {
       return SquareType.Mine == _field.Field[index.Row, index.Column].SquareType;
     }
+    private void FindAndRevealMines()
+    {
+      for (int row = 0; row < _field.RowDimension; row++)
+      {
+        for (int column = 0; column < _field.ColumnDimension; column++)
+        {
+          if (IsMine(new RowColumn(row, column)))
+          {
+            _revealed.Add(new RowColumn(row, column));
+          }
+        }
+      }
+    }
+
   }
 }
