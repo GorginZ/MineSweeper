@@ -79,27 +79,6 @@ namespace MineSweeper.Tests
                         + "   21\n"
                         + "    *\n";
       Assert.Equal(expectedField, game.FieldAsString());
-
     }
-    [Fact]
-    public void CantLoseOnFirstClickMovesMineToTopLeftReCalculatesSquareHints()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 3, minePositioning);
-      var game = new Game(mineField);
-      game.HandleSelectedSquare(new RowColumn(0, 4));
-      game.HandleSelectedSquare(new RowColumn(0, 0));
-      var expectedField = " 1...\n"
-                        + "11...\n"
-                        + "...1.\n"
-                        + "...11\n"
-                        + "...1*\n";
-      Assert.Equal(expectedField, game.FieldAsString());
-
-    }
-
-
-
-
   }
 }

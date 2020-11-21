@@ -152,20 +152,32 @@ namespace MineSweeper
 }
 ```
 
-OOP
+OOP/ Design and Decision making. Where should some data belong?
 
 Who is responsible for if the square is revealed?
 
-As thing stand my square is a class with a hintvalue and a square type, it had a bool on it 'revealed. 
+As things stand my square is a class with a hintvalue and a square type, it had a bool on it 'revealed. 
 
 - when i decide to reveal clues and print the boadr is it faster/better to look into the board, look into it's square obj and ask are you revealed?
   or 
 
-- have the game know which squares it has revealed as a hashset of rowcolumn indexes and when it looks through the field go, is this one on my list?.
+- have the game know which squares it has revealed as a hashset of rowcolumn indexes and when it looks through the field go, is this one on my list?
 
-  I feel like seperaet list to decide what is and isn't revealed is more OOP.
-
-  This might also serve me better for the future - when the game ends i want o show the positions of all the mines - but no all the clues.  
+  
+probably 'efficiency' isn't going to be what a decision comes down to because there is likely little difference. 
+  What is more meaningful is  how my class and program read as a whole. 
+  
+  I feel like seperaet list to decide what is and isn't revealed is maybe less OOP but more domain appropriate.
+  
+  Either way has implications for other logic.
+  
+  for instance to implement the 'can't lose on first hit' logic I will need to reassign a mine somewhere else on the field. with a square class, I change it's enum property, and then I wil have to recalculate its adjacent squareHintValues.
+  
+  On the other hand if I return to the square struct I would new up a new square object and put it in.  and have to instantiaet new squares and insert them for the adjacent squres - this is based on my understanding of using a struct well or appropriately - to properly benefit from its value type it is idea if they are immutable. 
+  
+  One attractive thing about the square class as it stands is I probably do wanta mutable object. I don't want to throw the whole game away because someone hit a mine / new it up again when the same thing could happen/ expensive resource wise - so I can manipulate the square (have the squaer type as something mutable / designed that way) or a struct and make new ones and put them in. 
+  
+- the struct might be preferable in the end because it's only in the instance that the first hit is a mine that I have reason to change anything about the squares (UNLESS I want the square to be responsible for if it is revealed as well)
 
 ```c#
   public string FieldAsString()

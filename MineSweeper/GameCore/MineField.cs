@@ -91,6 +91,30 @@ namespace MineSweeper
         }
       }
     }
+    public void MineHitOnFirstHitReArrange(RowColumn firstHit)
+    {
+      Field[firstHit.Row, firstHit.Column].SquareType = SquareType.Safe;
+
+      if (Field[0, 0].SquareType == SquareType.Safe)
+      {
+        Field[0, 0].SquareType = SquareType.Mine;
+        SetSquareHintValues();
+        return;
+      }
+      for (int i = 0; i < 1;)
+      {
+        for (int j = 0; j < 1;)
+        {
+          if (Field[i, j].SquareType == SquareType.Safe)
+          {
+            Field[i, j].SquareType = SquareType.Mine;
+            SetSquareHintValues();
+            i++;
+            j++;
+          }
+        }
+      }
+    }
 
 
 

@@ -92,6 +92,18 @@ namespace MineSweeper
         }
       }
     }
+    public void ProcessFirstHit(RowColumn selectedSquare)
+    {
+      if (!IsMine(selectedSquare))
+      {
+        HandleSelectedSquare(selectedSquare);
+      }
+      if (IsMine(selectedSquare))
+      {
+        _field.MineHitOnFirstHitReArrange(selectedSquare);
+        HandleSelectedSquare(selectedSquare);
+      }
+    }
 
   }
 }
