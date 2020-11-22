@@ -8,13 +8,14 @@ namespace MineSweeper
   public class Game
   {
     private MineField _field;
-    // private HashSet<RowColumn> _revealed;
-    // private HashSet<RowColumn> _flagged;
+    private HashSet<RowColumn> _revealed;
+    private HashSet<RowColumn> _flagged;
 
     public Game(MineField field)
     {
       _field = field;
-      // _revealed = new HashSet<RowColumn>();
+      _revealed = new HashSet<RowColumn>();
+      _flagged = new HashSet<RowColumn>();
     }
 
     public Square[,] GetField()
@@ -29,11 +30,20 @@ namespace MineSweeper
       {
         for (int j = 0; j < _field.ColumnDimension; j++)
         {
-          printableField.Append(Square.SquareAsString(_field.Field[i,j]));
+          if (_revealed.Contains(new RowColumn(i, j)))
+          {
+            printableField.Append(Square.SquareAsString(_field.Field[i, j]));
+            continue;
+          }
+          else  {
+          var value = _flagged.Contains(new RowColumn(i, j)) ? "F" : " ";
+          printableField.Append(value);
+          }
         }
-        printableField.Append("\n");
+          printableField.Append("\n");
+
       }
-      return printableField.ToString();
+        return printableField.ToString();
     }
 
     public void HandleSelectedSquare(RowColumn selectedSquare)
@@ -42,13 +52,13 @@ namespace MineSweeper
       {
         FindAndRevealMines();
       }
-      if (_field.Field[selectedSquare.Row, selectedSquare.Column].IsRevealed)
+      if (_revealed.Contains(selectedSquare))
       {
         return;
       }
       if (!IsMine(selectedSquare) || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
       {
-        _field.Field[selectedSquare.Row, selectedSquare.Column].IsRevealed = true;
+        _revealed.Add(selectedSquare);
       }
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
       {
@@ -75,8 +85,7 @@ namespace MineSweeper
         {
           if (IsMine(new RowColumn(row, column)))
           {
-            // _revealed.Add(new RowColumn(row, column));
-            _field.Field[row, column].IsRevealed = true;
+             _revealed.Add(new RowColumn(row, column));
           }
         }
       }
@@ -95,9 +104,7 @@ namespace MineSweeper
     }
     public void FlagSquare(RowColumn selectedSquare)
     {
-      // _flagged.Add(selectedSquare);
-      _field.Field[selectedSquare.Row, selectedSquare.Column].IsFlagged = true;
-
+      _flagged.Add(selectedSquare);
     }
 
   }
