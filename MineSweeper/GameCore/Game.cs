@@ -8,12 +8,13 @@ namespace MineSweeper
   public class Game
   {
     private MineField _field;
-    private HashSet<RowColumn> _revealed;
+    // private HashSet<RowColumn> _revealed;
+    // private HashSet<RowColumn> _flagged;
 
     public Game(MineField field)
     {
       _field = field;
-      _revealed = new HashSet<RowColumn>();
+      // _revealed = new HashSet<RowColumn>();
     }
 
     public Square[,] GetField()
@@ -29,7 +30,7 @@ namespace MineSweeper
       {
         for (int j = 0; j < _field.ColumnDimension; j++)
         {
-          var squareSymbol = _revealed.Contains(new RowColumn(i, j)) ? (Square.SquareAsString(_field.Field[i, j])) : (" ");
+          var squareSymbol = _field.Field[i,j].IsRevealed ? (Square.SquareAsString(_field.Field[i,j])) : (" ");
           printableField.Append(squareSymbol);
         }
         printableField.Append("\n");
@@ -43,13 +44,13 @@ namespace MineSweeper
       {
         FindAndRevealMines();
       }
-      if (_revealed.Contains(selectedSquare))
+      if (_field.Field[selectedSquare.Row, selectedSquare.Column].IsRevealed)
       {
         return;
       }
       if (!IsMine(selectedSquare) || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
       {
-        _revealed.Add(selectedSquare);
+        _field.Field[selectedSquare.Row, selectedSquare.Column].IsRevealed = true;
       }
       if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
       {
@@ -76,7 +77,8 @@ namespace MineSweeper
         {
           if (IsMine(new RowColumn(row, column)))
           {
-            _revealed.Add(new RowColumn(row, column));
+            // _revealed.Add(new RowColumn(row, column));
+            _field.Field[row,column].IsRevealed = true;
           }
         }
       }
@@ -92,6 +94,13 @@ namespace MineSweeper
         _field.MineHitOnFirstHitReArrange(selectedSquare);
         HandleSelectedSquare(selectedSquare);
       }
+    }
+
+    public void FlagSquare(RowColumn selectedSquare)
+    {
+      // _flagged.Add(selectedSquare);
+      _field.Field[selectedSquare.Row, selectedSquare.Column].IsFlagged = true;
+
     }
 
   }
