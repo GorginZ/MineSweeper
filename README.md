@@ -98,6 +98,18 @@ This has a few benefits I can see
 - It's open to modification: I am free to change around the MineField class it as I please without interupting anything I may work on in the Game class or elsewhere.
 - everything is more testable: my game class's tests aren't bogged down by field initilization tests, and furthermore everythin else in my game class I may want to test isn't dependent on too many other functions in my game class, I just need to pass in a field. It's easier to pinpoint any problems when things are split up this way.
 
+
+
+##### Concerns about closely coupled classes
+
+Because in this game the game class doesn't really manipulate the field (just produces something that can represent the data you are alowed to see at this time) I did not account for some dependencies that may develop with my design.
+
+For instance when implemented the logic to 're shuffle' a mine in the instance of hitting a mine on the first selection, that func calls a func of MineFields, because I thought the field has been responsible for everything do with itself so far, why change that. But now I have created a dependency for my game class. I wanted my game class to have an object just passed into it and it to be relatively de coupled but I've just undermined this in the last day in a few places.
+
+The game class also calls a MineField func to look at the squares around a square 'clicked' by the user. 
+
+my concerns are that I have undermined my attempts to follow OOP principles and it may impact readability. 
+
 #### YAGNI
 
 This will continue to be a theme and one I struggle most being strict with. As someone who is learning and has a powerful imagination and therefore often pretty excited when I'm working. Sometimes when the ball is rolling I can end up adding in lots of extra details. My mentors Frank and Bianca have, when we dicsussed this, given me good alternatives - for instance adding a trello card or plopping it down somewhere else. 
@@ -119,7 +131,17 @@ namespace MineSweeper
 }
 ```
 
-Error Handling
+Having said this. One area I am well behaved related to this is writing any game flow or play before necessary (see TDD approach).
+
+#### BIG O
+
+:w
+
+
+
+#### Error Handling
+
+Where to do it?
 
 ```C#
    [Fact]
@@ -158,9 +180,12 @@ Error Handling
     }
 ```
 
-#### Clear Intent
+#### Implementing interfaces
 
+This is something I'm learning. 
+I felt bad as soon as I wrote this (slapped it together to use to write and test other partsof MineField class).
 
+But I'm glad I found a problem with it and could put it on a to-do to fix.
 
 ```C#
 using System.Collections.Generic;
@@ -196,31 +221,69 @@ namespace MineSweeper
 }
 ```
 
-OOP/ Design and Decision making. Where should some data belong?
+#### OOP/ Design and Decision making. Where should some data belong? What data structures do I want?
 
-Who is responsible for if the square is revealed?
+A question I kept returning to is where the responsability for 'revealed' and 'flagged' lies. 
 
-As things stand my square is a class with a hintvalue and a square type, it had a bool on it 'revealed. 
-
-- when i decide to reveal clues and print the boadr is it faster/better to look into the board, look into it's square obj and ask are you revealed?
-  or 
+- when i decide to reveal clues and print the boadr is it better to look into the board, look into it's square obj and ask are you revealed?
+  OR
 
 - have the game know which squares it has revealed as a hashset of rowcolumn indexes and when it looks through the field go, is this one on my list?
 
-  
+  At the moment the game is responsible. 
 
-probably 'efficiency' isn't going to be what a decision comes down to because there is likely little difference. 
-  What is more meaningful is  how my class and program read as a whole. 
+  I am enjoying the pairing I have between my RowColumn struct and my hash sets on the game class.
 
-  I feel like seperaet list to decide what is and isn't revealed is maybe less OOP but more domain appropriate.
+  Hashset operations are optimised and because they are sets there are no duplicate values allowed, which I benefit from in my random mine allocation (there's a chance two of the same could be generaetd and that would leave me short a mine or mean I have to remove them or test for it or deal with it in whatever way - I do test for full number of mines though.
 
-  Either way has implications for other logic.
+  Hashsets have native functions to perform set operations on them and they are fairly inexpensive. 
 
-  for instance to implement the 'can't lose on first hit' logic I will need to reassign a mine somewhere else on the field. with a square class, I change it's enum property, and then I wil have to recalculate its adjacent squareHintValues.
+  Because there are practical as well as performance benefits to using hashsets in conjunction with my RowColumn struct, this lead me to leave the game responsible for revealed/flagged.
+  Because every element in a hashset is unique, searching in a hashset is very efficient, and another push towards this design with a RowColumn struct in conjunction with the hashset list.
+
+```C#
+namespace MineSweeper
+{
+  public readonly struct RowColumn
+  {
+    public readonly int Row;
+    public readonly int Column;
+
+    public RowColumn(int row, int column)
+    {
+      Row = row;
+      Column = column;
+    }
+  }
+}
+
+
+```
+
+```C#
+  public class Game {
+    private readonly MineField _field;
+    private readonly HashSet<RowColumn> _revealed;
+    private readonly HashSet<RowColumn> _flagged;
+//etc
+```
+
+
+Alternatives I considered:
+-note to self go back to spike branch for blocs
+
+#### Square - class or struct?
+
+What do I want this object to do/ how should it be used?
+
+ effects of either way:
+
+ 'can't lose on first hit' logic I will need to reassign a mine somewhere else on the field. with a square class, I change it's enum property, and then I wil have to recalculate its adjacent squareHintValues.
 
   On the other hand if I return to the square struct I would new up a new square object and put it in.  and have to instantiaet new squares and insert them for the adjacent squres - this is based on my understanding of using a struct well or appropriately - to properly benefit from its value type it is idea if they are immutable. 
 
-  One attractive thing about the square class as it stands is I probably do wanta mutable object. I don't want to throw the whole game away because someone hit a mine / new it up again when the same thing could happen/ expensive resource wise - so I can manipulate the square (have the squaer type as something mutable / designed that way) or a struct and make new ones and put them in. 
+  One attractive thing about the square class as it stands is I probably do want a mutable object. I don't want to throw the whole game away because someone hit a mine / new it up again when the same thing could happen/ expensive resource wise - so I can manipulate the square (have the squaer type as something mutable / designed that way) or a struct and make new ones and put them in. 
+(maybe it is cheaper to just new up a board, or render a 'board' and place the mines after they select. really it's all the same in some respect)
 
 - the struct might be preferable in the end because it's only in the instance that the first hit is a mine that I have reason to change anything about the squares (UNLESS I want the square to be responsible for if it is revealed as well)
 
@@ -247,9 +310,7 @@ probably 'efficiency' isn't going to be what a decision comes down to because th
     }
 ```
 
-Dependency Injection.
 
-i tried to focus on this throughout my design but I've now found myself in a situation where my game DOES actually depend on the field, i doesn't just accept a field object and is ready to go - now it does infact utilize and refer to the MineField class's properties and functions.
 
 An example:
 to look at the field.
@@ -260,9 +321,7 @@ to look at the field.
     if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
 ```
 
-Sometimes I manipulate the field directly, but yesterday when implemented the logic to 're shuffle' a mine in the instance of hitting a mine on the first selection, that logic in game called a func of MineFields, becaues I thought the field may be responsible for manipulating itself - but this created a dependency for my game class. I wanted my game class to have an object just passed into it and it to be relatively de coupled but I've just undermined this in the last day in a few places.
 
-I need to decide if it's ok for them to be tightly coupled like this. It's probably 'fine' for somethign small like this, but it cuts against what I had in mind.
 
 ```C#
   var squareSymbol = _revealed.Contains(new RowColumn(i, j)) ? (Square.SquareAsString(_field.Field[i, j])) : (" ");

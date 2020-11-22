@@ -10,7 +10,6 @@ namespace MineSweeper
       Row = row;
       Column = column;
     }
-
   }
 }
 

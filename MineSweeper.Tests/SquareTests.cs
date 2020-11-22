@@ -9,10 +9,10 @@ namespace MineSweeper.Tests
     {
       Square aMineSquare = new Square(SquareType.Mine, 4);
       Square aSafeSquare = new Square(SquareType.Safe, 4);
-      string mineSquare = Square.SquareAsString(aMineSquare);
-      string safeSquare = Square.SquareAsString(aSafeSquare);
+      string mineSquare = aMineSquare.SquareAsString();
+      string safeSquare = aSafeSquare.SquareAsString();
       Assert.Equal("*", mineSquare);
-      Assert.Equal(" ", safeSquare);
+      Assert.Equal("4", safeSquare);
     }
   }
 }

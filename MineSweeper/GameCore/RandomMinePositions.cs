@@ -6,9 +6,9 @@ namespace MineSweeper
 
   public class RandomMinePositions : IMinePositions
   {
-    private int _rowDimension;
-    private int _columnDimension;
-    private int _numberOfMines;
+    private readonly int _rowDimension;
+    private readonly int _columnDimension;
+    private readonly int _numberOfMines;
 
     public RandomMinePositions(int rowDimension, int columnDimension, int numberOfMines)
     {

@@ -9,7 +9,7 @@ namespace MineSweeper.Tests
     public void CantLoseOnFirstClickMovesMineToTopLeftReCalculatesSquareHints()
     {
       var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 3, minePositioning);
+      var mineField = new MineField(5, 5, minePositioning);
       var game = new Game(mineField);
       game.ProcessFirstHit(new RowColumn(2, 2));
       var expectedField = " 1...\n"
@@ -18,110 +18,32 @@ namespace MineSweeper.Tests
                         + "...11\n"
                         + "...1 \n";
       Assert.Equal(expectedField, game.FieldAsString());
-
     }
     [Fact]
     public void StilHasSameNumberOfMinesAfterFirstHitRearrange()
     {
-
-    }
-    [Fact]
-    public void InitialFieldViewRevealsNoSquareData()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 5, minePositioning);
+      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(2, 2), new RowColumn(4, 4) });
+      var mineField = new MineField(5, 5, minePositioning);
       var game = new Game(mineField);
-      var expectedField = "     \n"
-                        + "     \n"
-                        + "     \n"
-                        + "     \n"
-                        + "     \n";
-      Assert.Equal(expectedField, game.FieldAsString());
+      int numberOfMinesBeforeHit = NumberOfMinesInField(5, 5, mineField.Field);
+      game.ProcessFirstHit(new RowColumn(2, 2));
+      int numberOfMinesAfterHit = NumberOfMinesInField(5, 5, mineField.Field);
+      Assert.Equal(numberOfMinesBeforeHit, numberOfMinesAfterHit);
     }
-    [Fact]
-    public void RevealsAppropriateSquareHintValue()
+    private int NumberOfMinesInField(int rows, int columns, Square[,] field)
     {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 5, minePositioning);
-      var game = new Game(mineField);
-      var expectedField = "     \n"
-                        + "     \n"
-                        + "     \n"
-                        + "   2 \n"
-                        + "     \n";
-      game.HandleSelectedSquare(new RowColumn(3, 3));
-      Assert.Equal(expectedField, game.FieldAsString());
-
+      int actualNumberOfMinesInField = 0;
+      for (int i = 0; i < rows; i++)
+      {
+        for (int j = 0; j < columns; j++)
+        {
+          if (field[i, j].SquareType == SquareType.Mine)
+          {
+            actualNumberOfMinesInField++;
+          }
+        }
+      }
+      return actualNumberOfMinesInField;
     }
-    [Fact]
-    public void RevealsAppropriateSquareHintValueWhenEmptySquareSelected()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 5, minePositioning);
-      var game = new Game(mineField);
-      var expectedField = " 1...\n"
-                        + " 211.\n"
-                        + "   1.\n"
-                        + "   21\n"
-                        + "     \n";
-      game.HandleSelectedSquare(new RowColumn(0, 4));
-      Assert.Equal(expectedField, game.FieldAsString());
-    }
-    [Fact]
-    public void BalloonsCluesOutAppropriately()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0) });
-      var mineField = new MineField(5, 5, 5, minePositioning);
-      var game = new Game(mineField);
-      var expectedField = " 1...\n"
-                        + "11...\n"
-                        + ".....\n"
-                        + ".....\n"
-                        + ".....\n";
-      game.HandleSelectedSquare(new RowColumn(0, 4));
-      Assert.Equal(expectedField, game.FieldAsString());
-    }
-    [Fact]
-    public void OnLossRevealsAllMinePositionsAndAlreadyUncoveredClues()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 3, minePositioning);
-      var game = new Game(mineField);
-      game.HandleSelectedSquare(new RowColumn(0, 4));
-      game.HandleSelectedSquare(new RowColumn(0, 0));
-      var expectedField = "*1...\n"
-                        + " 211.\n"
-                        + "  *1.\n"
-                        + "   21\n"
-                        + "    *\n";
-      Assert.Equal(expectedField, game.FieldAsString());
-    }
-    [Fact]
-    public void CanFlagSuspectMine()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
-      var mineField = new MineField(5, 5, 5, minePositioning);
-      var game = new Game(mineField);
-      var expectedField = " 1...\n"
-                        + " 211.\n"
-                        + "   1.\n"
-                        + "   21\n"
-                        + "     \n";
-      game.HandleSelectedSquare(new RowColumn(0, 4));
-      Assert.Equal(expectedField, game.FieldAsString());
-
-      game.FlagSquare(new RowColumn(0, 0));
-      var expectedFlagField = "F1...\n"
-                            + " 211.\n"
-                            + "   1.\n"
-                            + "   21\n"
-                            + "     \n";
-
-      var actualFlagField = game.FieldAsString();
-      Assert.Equal(expectedFlagField, actualFlagField);
-
-    }
-
-
   }
 }
