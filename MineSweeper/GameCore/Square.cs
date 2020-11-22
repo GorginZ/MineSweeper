@@ -15,14 +15,18 @@ namespace MineSweeper
     }
     public static string SquareAsString(Square square)
     {
-      if (square.SquareType == SquareType.Safe)
+      if (!square.IsRevealed && square.IsFlagged)
+      {
+        return "F";
+      }
+      if (square.IsRevealed && square.SquareType == SquareType.Safe)
       {
         var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (".");
         return squareSymbol;
       }
-      if (square.IsFlagged)
+      if (!square.IsRevealed)
       {
-        return "F";
+        return " ";
       }
       else
       {

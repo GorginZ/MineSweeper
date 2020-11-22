@@ -29,9 +29,7 @@ namespace MineSweeper
       {
         for (int j = 0; j < _field.ColumnDimension; j++)
         {
-      var squareSymbol = _field.Field[i, j].IsRevealed ? (Square.SquareAsString(_field.Field[i, j])) : (" ");
-          var symbolOnGrid = _field.Field[i,j].IsFlagged ? ("F") : (squareSymbol);
-          printableField.Append(symbolOnGrid);
+          printableField.Append(Square.SquareAsString(_field.Field[i,j]));
         }
         printableField.Append("\n");
       }
