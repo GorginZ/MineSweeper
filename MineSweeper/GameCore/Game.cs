@@ -25,19 +25,19 @@ namespace MineSweeper
     public string FieldAsString()
     {
       var printableField = new StringBuilder();
-
       for (int i = 0; i < _field.RowDimension; i++)
       {
         for (int j = 0; j < _field.ColumnDimension; j++)
         {
-          var squareSymbol = _field.Field[i,j].IsRevealed ? (Square.SquareAsString(_field.Field[i,j])) : (" ");
-          printableField.Append(squareSymbol);
+      var squareSymbol = _field.Field[i, j].IsRevealed ? (Square.SquareAsString(_field.Field[i, j])) : (" ");
+          var symbolOnGrid = _field.Field[i,j].IsFlagged ? ("F") : (squareSymbol);
+          printableField.Append(symbolOnGrid);
         }
         printableField.Append("\n");
       }
       return printableField.ToString();
     }
-  
+
     public void HandleSelectedSquare(RowColumn selectedSquare)
     {
       if (IsMine(selectedSquare))
@@ -78,7 +78,7 @@ namespace MineSweeper
           if (IsMine(new RowColumn(row, column)))
           {
             // _revealed.Add(new RowColumn(row, column));
-            _field.Field[row,column].IsRevealed = true;
+            _field.Field[row, column].IsRevealed = true;
           }
         }
       }
@@ -95,7 +95,6 @@ namespace MineSweeper
         HandleSelectedSquare(selectedSquare);
       }
     }
-
     public void FlagSquare(RowColumn selectedSquare)
     {
       // _flagged.Add(selectedSquare);
