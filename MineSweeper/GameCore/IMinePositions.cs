@@ -4,6 +4,6 @@ namespace MineSweeper
 {
     public interface IMinePositions
     {
-        HashSet<RowColumn> GetMinePositions(); 
+        HashSet<RowColumn> GetMinePositions();
     }
 }

@@ -9,11 +9,11 @@ namespace MineSweeper
       SquareType = squareType;
       SquareHintValue = hintValue;
     }
-    public static string SquareAsString(Square square)
+    public string SquareAsString()
     {
-      if (square.SquareType == SquareType.Safe)
+      if (this.SquareType == SquareType.Safe)
       {
-        var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (".");
+        var squareSymbol = this.SquareHintValue > 0 ? (this.SquareHintValue.ToString()) : (".");
         return squareSymbol;
       }
       else

@@ -6,18 +6,14 @@ namespace MineSweeper
   public class MineField
   {
     public Square[,] Field;
-
     public int RowDimension;
     public int ColumnDimension;
-
-    private int _numberOfMines;
-    private IMinePositions _minePositioning;
-    public MineField(int rowDimension, int columnDimension, int numberOfMines, IMinePositions minePositioning)
+    private readonly IMinePositions _minePositioning;
+    public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
     {
       Field = new Square[rowDimension, columnDimension];
       RowDimension = rowDimension;
       ColumnDimension = columnDimension;
-      _numberOfMines = numberOfMines;
       _minePositioning = minePositioning;
       InitializeField();
 
@@ -56,7 +52,6 @@ namespace MineSweeper
       var downNeighbour = (row + 1);
 
       HashSet<RowColumn> neighbourList = new HashSet<RowColumn>{
-
         new RowColumn(row, rightNeighbour), new RowColumn(row, leftNeighbour), new RowColumn(upNeighbour, column), new RowColumn(downNeighbour, column), new RowColumn(upNeighbour, rightNeighbour), new RowColumn(upNeighbour, leftNeighbour), new RowColumn(downNeighbour, rightNeighbour), new RowColumn(downNeighbour, leftNeighbour)
         };
       neighbourList.RemoveWhere(OutOfRange);
@@ -115,8 +110,5 @@ namespace MineSweeper
         }
       }
     }
-
-
-
   }
 }
