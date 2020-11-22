@@ -29,25 +29,14 @@ namespace MineSweeper
       {
         for (int j = 0; j < _field.ColumnDimension; j++)
         {
-          var squareSymbol = _revealed.Contains(new RowColumn(i, j)) ? (SquareAsString(_field.Field[i, j])) : (" ");
+          var squareSymbol = _revealed.Contains(new RowColumn(i, j)) ? (Square.SquareAsString(_field.Field[i, j])) : (" ");
           printableField.Append(squareSymbol);
         }
         printableField.Append("\n");
       }
       return printableField.ToString();
     }
-    public static string SquareAsString(Square square)
-    {
-      if (square.SquareType == SquareType.Safe)
-      {
-        var squareSymbol = square.SquareHintValue > 0 ? (square.SquareHintValue.ToString()) : (".");
-        return squareSymbol;
-      }
-      else
-      {
-        return "*";
-      }
-    }
+  
     public void HandleSelectedSquare(RowColumn selectedSquare)
     {
       if (IsMine(selectedSquare))
