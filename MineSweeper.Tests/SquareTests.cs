@@ -12,7 +12,7 @@ namespace MineSweeper.Tests
       string mineSquare = Square.SquareAsString(aMineSquare);
       string safeSquare = Square.SquareAsString(aSafeSquare);
       Assert.Equal("*", mineSquare);
-      Assert.Equal("4", safeSquare);
+      Assert.Equal(" ", safeSquare);
     }
   }
 }

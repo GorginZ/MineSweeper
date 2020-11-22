@@ -208,19 +208,20 @@ As things stand my square is a class with a hintvalue and a square type, it had 
 - have the game know which squares it has revealed as a hashset of rowcolumn indexes and when it looks through the field go, is this one on my list?
 
   
+
 probably 'efficiency' isn't going to be what a decision comes down to because there is likely little difference. 
   What is more meaningful is  how my class and program read as a whole. 
-  
+
   I feel like seperaet list to decide what is and isn't revealed is maybe less OOP but more domain appropriate.
-  
+
   Either way has implications for other logic.
-  
+
   for instance to implement the 'can't lose on first hit' logic I will need to reassign a mine somewhere else on the field. with a square class, I change it's enum property, and then I wil have to recalculate its adjacent squareHintValues.
-  
+
   On the other hand if I return to the square struct I would new up a new square object and put it in.  and have to instantiaet new squares and insert them for the adjacent squres - this is based on my understanding of using a struct well or appropriately - to properly benefit from its value type it is idea if they are immutable. 
-  
+
   One attractive thing about the square class as it stands is I probably do wanta mutable object. I don't want to throw the whole game away because someone hit a mine / new it up again when the same thing could happen/ expensive resource wise - so I can manipulate the square (have the squaer type as something mutable / designed that way) or a struct and make new ones and put them in. 
-  
+
 - the struct might be preferable in the end because it's only in the instance that the first hit is a mine that I have reason to change anything about the squares (UNLESS I want the square to be responsible for if it is revealed as well)
 
 ```c#
@@ -262,4 +263,38 @@ to look at the field.
 Sometimes I manipulate the field directly, but yesterday when implemented the logic to 're shuffle' a mine in the instance of hitting a mine on the first selection, that logic in game called a func of MineFields, becaues I thought the field may be responsible for manipulating itself - but this created a dependency for my game class. I wanted my game class to have an object just passed into it and it to be relatively de coupled but I've just undermined this in the last day in a few places.
 
 I need to decide if it's ok for them to be tightly coupled like this. It's probably 'fine' for somethign small like this, but it cuts against what I had in mind.
+
+```C#
+  var squareSymbol = _revealed.Contains(new RowColumn(i, j)) ? (Square.SquareAsString(_field.Field[i, j])) : (" ");
+
+vs
+  
+   var squareSymbol = _field.Field[i,j].IsRevealed ? (Square.SquareAsString(_field.Field[i,j])) : (" ");
+```
+
+```C#
+  public void HandleSelectedSquare(RowColumn selectedSquare)
+    {
+      if (IsMine(selectedSquare))
+      {
+        FindAndRevealMines();
+      }
+      if _revealed.Contains(selectedSquare);
+      {
+        return;
+      }
+      if (!IsMine(selectedSquare) || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
+      {
+        _revealed.Add(selectedSquare);
+      }
+      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
+      {
+        ProcessRevealOfNeighboursOfEmptySquare(selectedSquare);
+      }
+    }
+```
+
+vs
+
+
 
