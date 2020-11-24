@@ -30,12 +30,9 @@ namespace MineSweeper
     }
     private void FillFieldWithSquares()
     {
-      for (int row = 0; row < RowDimension; row++)
+      foreach (var coord in Coordinates())
       {
-        for (int column = 0; column < ColumnDimension; column++)
-        {
-          _field[row, column] = new Square(SquareType.Safe, 0);
-        }
+        _field[coord.Row, coord.Column] =  new Square(SquareType.Safe, 0);
       }
     }
 
@@ -43,7 +40,7 @@ namespace MineSweeper
     {
       foreach (RowColumn index in mines)
       {
-        _field[index.Row, index.Column].SquareType = SquareType.Mine;
+        this[index].SquareType = SquareType.Mine;
       }
     }
     public HashSet<RowColumn> GetNeighboursOfSquare(int row, int column)
@@ -122,6 +119,17 @@ namespace MineSweeper
             i++;
             j++;
           }
+        }
+      }
+    }
+
+    public IEnumerable<RowColumn> Coordinates()
+    {
+      for (int row = 0; row < RowDimension; row++)
+      {
+        for (int column = 0; column < ColumnDimension; column++)
+        {
+          yield return new RowColumn(row, column);
         }
       }
     }
