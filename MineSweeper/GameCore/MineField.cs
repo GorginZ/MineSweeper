@@ -1,22 +1,25 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MineSweeper
 {
-  public class MineField
+  public class MineField : IEnumerable<Square>
   {
-    public Square[,] Field;
-    public int RowDimension;
-    public int ColumnDimension;
+    private readonly Square[,] _field;
+    public int RowDimension => _field.GetLength(0);
+    public int ColumnDimension => _field.GetLength(1);
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
     {
-      Field = new Square[rowDimension, columnDimension];
-      RowDimension = rowDimension;
-      ColumnDimension = columnDimension;
+      _field = new Square[rowDimension, columnDimension];
       _minePositioning = minePositioning;
       InitializeField();
 
     }
+
+    public Square this[RowColumn coord] => _field[coord.Row, coord.Column];
+
     private void InitializeField()
     {
       FillFieldWithSquares();
@@ -31,7 +34,7 @@ namespace MineSweeper
       {
         for (int column = 0; column < ColumnDimension; column++)
         {
-          Field[row, column] = new Square(SquareType.Safe, 0);
+          _field[row, column] = new Square(SquareType.Safe, 0);
         }
       }
     }
@@ -40,7 +43,7 @@ namespace MineSweeper
     {
       foreach (RowColumn index in mines)
       {
-        Field[index.Row, index.Column].SquareType = SquareType.Mine;
+        _field[index.Row, index.Column].SquareType = SquareType.Mine;
       }
     }
     public HashSet<RowColumn> GetNeighboursOfSquare(int row, int column)
@@ -58,7 +61,7 @@ namespace MineSweeper
     }
     private bool OutOfRange(RowColumn rowColumn)
     {
-      return rowColumn.Row < 0 || rowColumn.Row >= Field.GetLength(0) || rowColumn.Column < 0 || rowColumn.Column >= Field.GetLength(1);
+      return rowColumn.Row < 0 || rowColumn.Row >= _field.GetLength(0) || rowColumn.Column < 0 || rowColumn.Column >= _field.GetLength(1);
     }
     public int AdjacentMineCount(HashSet<RowColumn> neighbourList)
     {
@@ -66,7 +69,7 @@ namespace MineSweeper
 
       foreach (RowColumn index in neighbourList)
       {
-        if (Field[index.Row, index.Column].SquareType == SquareType.Mine)
+        if (_field[index.Row, index.Column].SquareType == SquareType.Mine)
         {
           count++;
         }
@@ -81,17 +84,30 @@ namespace MineSweeper
         {
           HashSet<RowColumn> neighbours = GetNeighboursOfSquare(row, column);
           int value = AdjacentMineCount(neighbours);
-          Field[row, column].SquareHintValue = value;
+          _field[row, column].SquareHintValue = value;
         }
       }
     }
+    public string FieldAsString()
+    {
+      var printableField = new StringBuilder();
+      for (int i = 0; i < this.RowDimension; i++)
+      {
+        for (int j = 0; j < this.ColumnDimension; j++)
+        {
+          printableField.Append(this._field[i, j].SquareAsString());
+        }
+        printableField.Append("\n");
+      }
+      return printableField.ToString();
+    }
     public void MineHitOnFirstHitReArrange(RowColumn firstHit)
     {
-      Field[firstHit.Row, firstHit.Column].SquareType = SquareType.Safe;
+      _field[firstHit.Row, firstHit.Column].SquareType = SquareType.Safe;
 
-      if (Field[0, 0].SquareType == SquareType.Safe)
+      if (_field[0, 0].SquareType == SquareType.Safe)
       {
-        Field[0, 0].SquareType = SquareType.Mine;
+        _field[0, 0].SquareType = SquareType.Mine;
         SetSquareHintValues();
         return;
       }
@@ -99,9 +115,9 @@ namespace MineSweeper
       {
         for (int j = 0; j < 1;)
         {
-          if (Field[i, j].SquareType == SquareType.Safe)
+          if (_field[i, j].SquareType == SquareType.Safe)
           {
-            Field[i, j].SquareType = SquareType.Mine;
+            _field[i, j].SquareType = SquareType.Mine;
             SetSquareHintValues();
             i++;
             j++;
@@ -109,5 +125,9 @@ namespace MineSweeper
         }
       }
     }
+
+    public IEnumerator<Square> GetEnumerator() => (IEnumerator<Square>)_field.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
   }
 }

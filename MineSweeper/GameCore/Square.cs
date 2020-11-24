@@ -13,6 +13,7 @@ namespace MineSweeper
       IsFlagged = false;
       IsRevealed = false;
     }
+
     public string SquareAsString()
     {
       if (!this.IsRevealed && this.IsFlagged)

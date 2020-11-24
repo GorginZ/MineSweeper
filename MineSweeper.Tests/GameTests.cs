@@ -16,7 +16,7 @@ namespace MineSweeper.Tests
                         + "     \n"
                         + "     \n"
                         + "     \n";
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
     }
     [Fact]
     public void RevealsAppropriateSquareHintValue()
@@ -30,7 +30,7 @@ namespace MineSweeper.Tests
                         + "   2 \n"
                         + "     \n";
       game.HandleSelectedSquare(new RowColumn(3, 3));
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
     }
     [Fact]
     public void RevealsAppropriateSquareHintValueWhenEmptySquareSelected()
@@ -44,7 +44,7 @@ namespace MineSweeper.Tests
                         + "   21\n"
                         + "     \n";
       game.HandleSelectedSquare(new RowColumn(0, 4));
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
     }
     [Fact]
     public void BalloonsCluesOutAppropriately()
@@ -58,7 +58,7 @@ namespace MineSweeper.Tests
                         + ".....\n"
                         + ".....\n";
       game.HandleSelectedSquare(new RowColumn(0, 4));
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
     }
     [Fact]
     public void OnLossRevealsAllMinePositionsAndAlreadyUncoveredClues()
@@ -73,7 +73,7 @@ namespace MineSweeper.Tests
                         + "  *1.\n"
                         + "   21\n"
                         + "    *\n";
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
     }
     [Fact]
     public void CanFlagSuspectMine()
@@ -87,7 +87,7 @@ namespace MineSweeper.Tests
                         + "   21\n"
                         + "     \n";
       game.HandleSelectedSquare(new RowColumn(0, 4));
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
 
       game.FlagSquare(new RowColumn(0, 0));
       var expectedFlagField = "F1...\n"
@@ -96,7 +96,7 @@ namespace MineSweeper.Tests
                             + "   21\n"
                             + "     \n";
 
-      var actualFlagField = game.FieldAsString();
+      var actualFlagField = game.GetCurrentField();
       Assert.Equal(expectedFlagField, actualFlagField);
     }
   }

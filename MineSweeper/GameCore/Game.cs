@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace MineSweeper
 {
@@ -13,40 +13,25 @@ namespace MineSweeper
       _field = field;
     }
 
-    public Square[,] GetField()
+    public string GetCurrentField()
     {
-      return _field.Field;
+      return this._field.FieldAsString();
     }
-
-    public string FieldAsString()
-    {
-      var printableField = new StringBuilder();
-      for (int i = 0; i < _field.RowDimension; i++)
-      {
-        for (int j = 0; j < _field.ColumnDimension; j++)
-        {
-          printableField.Append(_field.Field[i, j].SquareAsString());
-        }
-        printableField.Append("\n");
-      }
-      return printableField.ToString();
-    }
-
     public void HandleSelectedSquare(RowColumn selectedSquare)
     {
       if (IsMine(selectedSquare))
       {
         FindAndRevealMines();
       }
-      if (_field.Field[selectedSquare.Row, selectedSquare.Column].IsRevealed)
+      if (_field[selectedSquare].IsRevealed)
       {
         return;
       }
-      if (!IsMine(selectedSquare) || _field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue != 0)
+      if (!IsMine(selectedSquare) || _field[selectedSquare].SquareHintValue != 0)
       {
-        _field.Field[selectedSquare.Row, selectedSquare.Column].IsRevealed = true;
+        _field[selectedSquare].IsRevealed = true;
       }
-      if (_field.Field[selectedSquare.Row, selectedSquare.Column].SquareHintValue == 0)
+      if (_field[selectedSquare].SquareHintValue == 0)
       {
         RevealAllAssociatedAdjacentSquaresProcess(selectedSquare);
       }
@@ -61,19 +46,13 @@ namespace MineSweeper
     }
     public bool IsMine(RowColumn index)
     {
-      return SquareType.Mine == _field.Field[index.Row, index.Column].SquareType;
+      return SquareType.Mine == _field[index].SquareType;
     }
     private void FindAndRevealMines()
     {
-      for (int row = 0; row < _field.RowDimension; row++)
+      foreach (var square in _field.Where(square => square.SquareType == SquareType.Mine))
       {
-        for (int column = 0; column < _field.ColumnDimension; column++)
-        {
-          if (_field.Field[row, column].SquareType == SquareType.Mine)
-          {
-            _field.Field[row, column].IsRevealed = true;
-          }
-        }
+        square.IsRevealed = true;
       }
     }
     public void ProcessFirstHit(RowColumn selectedSquare)
@@ -90,7 +69,7 @@ namespace MineSweeper
     }
     public void FlagSquare(RowColumn selectedSquare)
     {
-      _field.Field[selectedSquare.Row, selectedSquare.Column].IsFlagged = true;
+      _field[selectedSquare].IsFlagged = true;
     }
   }
 }

@@ -20,7 +20,7 @@ namespace MineSweeper.Tests
     {
       var minePlacement = new RandomMinePositions(5,5,0);
       var field = new MineField(5, 5, minePlacement);
-      var actualNumberOfMinesInField = NumberOfMinesInField(5, 5, field.Field);
+      var actualNumberOfMinesInField = NumberOfMinesInField(5, 5, field.MineCount);
       Assert.Equal(0, actualNumberOfMinesInField);
     }
 

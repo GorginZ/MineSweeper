@@ -17,7 +17,7 @@ namespace MineSweeper.Tests
                         + ".....\n"
                         + "...11\n"
                         + "...1 \n";
-      Assert.Equal(expectedField, game.FieldAsString());
+      Assert.Equal(expectedField, game.GetCurrentField());
     }
     [Fact]
     public void StilHasSameNumberOfMinesAfterFirstHitRearrange()
