@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace MineSweeper
 {
@@ -9,6 +10,8 @@ namespace MineSweeper
     private readonly Square[,] _field;
     public int RowDimension => _field.GetLength(0);
     public int ColumnDimension => _field.GetLength(1);
+    public int MineCount => Coordinates().Where(IsMine).Count();
+
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
     {
@@ -32,7 +35,7 @@ namespace MineSweeper
     {
       foreach (var coord in Coordinates())
       {
-        _field[coord.Row, coord.Column] =  new Square(SquareType.Safe, 0);
+        _field[coord.Row, coord.Column] = new Square(SquareType.Safe, 0);
       }
     }
 
@@ -132,6 +135,12 @@ namespace MineSweeper
           yield return new RowColumn(row, column);
         }
       }
+    }
+
+
+   public bool IsMine(RowColumn index)
+    {
+      return SquareType.Mine == this[index].SquareType;
     }
 
     public IEnumerator<Square> GetEnumerator() => (IEnumerator<Square>)_field.GetEnumerator();
