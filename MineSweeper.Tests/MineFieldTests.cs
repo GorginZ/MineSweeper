@@ -20,8 +20,7 @@ namespace MineSweeper.Tests
     {
       var minePlacement = new RandomMinePositions(5, 5, 0);
       var field = new MineField(5, 5, minePlacement);
-      var actualNumberOfMinesInField = field.MineCount;
-      Assert.Equal(0, actualNumberOfMinesInField);
+      Assert.Equal(0, field.MineCount);
     }
 
     [Fact]
@@ -29,8 +28,7 @@ namespace MineSweeper.Tests
     {
       var minePlacement = new RandomMinePositions(5, 5, 25);
       var field = new MineField(5, 5, minePlacement);
-      int numberOfMinesOnField = field.MineCount;
-      Assert.Equal(25, numberOfMinesOnField);
+      Assert.Equal(25, field.MineCount);
     }
     // [Fact]
     // public void SquareHaveCorrectSquareHintValue()
@@ -42,25 +40,5 @@ namespace MineSweeper.Tests
     //   Assert.Equal(5, field.Field[3, 1].SquareHintValue);
     //   Assert.Equal(0, field.Field[2, 2].SquareHintValue);
     // }
-
-    // private int NumberOfMinesInField(int rows, int columns, Square[,] field)
-    // {
-    //   int actualNumberOfMinesInField = 0;
-    //   for (int i = 0; i < rows; i++)
-    //   {
-    //     for (int j = 0; j < columns; j++)
-    //     {
-    //       if (field[i, j].SquareType == SquareType.Mine)
-    //       {
-    //         actualNumberOfMinesInField++;
-    //       }
-    //     }
-    //   }
-    //   return actualNumberOfMinesInField;
-    // }
-
-
-
-
   }
 }

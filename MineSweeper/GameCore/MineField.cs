@@ -136,14 +136,11 @@ namespace MineSweeper
         }
       }
     }
-
-
-   public bool IsMine(RowColumn index)
+    public bool IsMine(RowColumn index)
     {
       return SquareType.Mine == this[index].SquareType;
     }
-
-    public IEnumerator<Square> GetEnumerator() => (IEnumerator<Square>)_field.GetEnumerator();
+    public IEnumerator<Square> GetEnumerator() => _field.Cast<Square>().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
   }
