@@ -2,6 +2,6 @@ namespace MineSweeper
 {
     public interface IOutPut
     {
-        void DisplayField(string field); 
+        void Write(string printThis);
     }
 }
