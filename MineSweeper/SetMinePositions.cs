@@ -4,11 +4,11 @@ namespace MineSweeper
 {
   public class SetMinePositions : IMinePositions
   {
-    public HashSet<RowColumn> setListOfMines;
+    public IEnumerable<RowColumn> setListOfMines;
     public SetMinePositions(HashSet<RowColumn> hashSetOfMines)
     {
       setListOfMines = hashSetOfMines;
     }
-    public HashSet<RowColumn> GetMinePositions() => setListOfMines;
+    public IEnumerable<RowColumn> GetMinePositions() => setListOfMines;
   }
 }

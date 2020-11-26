@@ -5,9 +5,9 @@ namespace MineSweeper.ConsoleImplementation
 {
   public class ConsoleOutput : IOutPut
   {
-    public void DisplayField(string field)
+    public void Write(string printThis)
     {
-      Console.WriteLine(field);
+      Console.WriteLine(printThis);
     }
   }
 }

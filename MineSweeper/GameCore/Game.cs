@@ -7,6 +7,7 @@ namespace MineSweeper
   public class Game
   {
     private readonly MineField _field;
+    public bool Haslost;
 
     public Game(MineField field)
     {
@@ -22,6 +23,7 @@ namespace MineSweeper
       if (IsMine(selectedSquare))
       {
         FindAndRevealMines();
+        this.Haslost = true;
       }
       if (_field[selectedSquare].IsRevealed)
       {
@@ -55,21 +57,13 @@ namespace MineSweeper
         square.IsRevealed = true;
       }
     }
-    public void ProcessFirstHit(RowColumn selectedSquare)
-    {
-      if (!IsMine(selectedSquare))
-      {
-        HandleSelectedSquare(selectedSquare);
-      }
-      if (IsMine(selectedSquare))
-      {
-        _field.MineHitOnFirstHitReArrange(selectedSquare);
-        HandleSelectedSquare(selectedSquare);
-      }
-    }
     public void FlagSquare(RowColumn selectedSquare)
     {
       _field[selectedSquare].IsFlagged = true;
+    }
+    public bool HasWon()
+    {
+      return _field.RevealedCount == ((_field.RowDimension * _field.ColumnDimension) - (_field.MineCount));
     }
   }
 }
