@@ -12,6 +12,5 @@ namespace MineSweeper
     Seven,
     Eight,
     Mine
-
   }
 }
