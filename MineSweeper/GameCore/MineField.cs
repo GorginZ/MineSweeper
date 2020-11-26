@@ -100,30 +100,6 @@ namespace MineSweeper
       }
       return printableField.ToString();
     }
-    public void MineHitOnFirstHitReArrange(RowColumn firstHit)
-    {
-      _field[firstHit.Row, firstHit.Column].SquareType = SquareType.Safe;
-
-      if (_field[0, 0].SquareType == SquareType.Safe)
-      {
-        _field[0, 0].SquareType = SquareType.Mine;
-        SetSquareHintValues();
-        return;
-      }
-      for (int i = 0; i < 1;)
-      {
-        for (int j = 0; j < 1;)
-        {
-          if (_field[i, j].SquareType == SquareType.Safe)
-          {
-            _field[i, j].SquareType = SquareType.Mine;
-            SetSquareHintValues();
-            i++;
-            j++;
-          }
-        }
-      }
-    }
 
     public IEnumerable<RowColumn> Coordinates()
     {
@@ -139,7 +115,7 @@ namespace MineSweeper
     {
       return SquareType.Mine == this[index].SquareType;
     }
- public bool IsRevealed(RowColumn index)
+    public bool IsRevealed(RowColumn index)
     {
       return this[index].IsRevealed;
     }

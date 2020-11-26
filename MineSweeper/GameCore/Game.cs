@@ -57,25 +57,13 @@ namespace MineSweeper
         square.IsRevealed = true;
       }
     }
-    public void ProcessFirstHit(RowColumn selectedSquare)
-    {
-      if (!IsMine(selectedSquare))
-      {
-        HandleSelectedSquare(selectedSquare);
-      }
-      if (IsMine(selectedSquare))
-      {
-        _field.MineHitOnFirstHitReArrange(selectedSquare);
-        HandleSelectedSquare(selectedSquare);
-      }
-    }
     public void FlagSquare(RowColumn selectedSquare)
     {
       _field[selectedSquare].IsFlagged = true;
     }
     public bool HasWon()
     {
-      return _field.MineCount == _field.RevealedCount;
+      return _field.RevealedCount == ((_field.RowDimension * _field.ColumnDimension) - (_field.MineCount));
     }
   }
 }
