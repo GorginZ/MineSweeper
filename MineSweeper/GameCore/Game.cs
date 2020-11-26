@@ -29,11 +29,11 @@ namespace MineSweeper
       {
         return;
       }
-      if (!IsMine(selectedSquare) || _field[selectedSquare].SquareHintValue != 0)
+      if (!IsMine(selectedSquare) || _field[selectedSquare].SquareType != 0)
       {
         _field[selectedSquare].IsRevealed = true;
       }
-      if (_field[selectedSquare].SquareHintValue == 0)
+      if (_field[selectedSquare].SquareType == 0)
       {
         RevealAllAssociatedAdjacentSquaresProcess(selectedSquare);
       }

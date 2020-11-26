@@ -3,36 +3,35 @@ namespace MineSweeper
   public class Square
   {
     public SquareType SquareType;
-    public int SquareHintValue;
     public bool IsFlagged;
     public bool IsRevealed;
-    public Square(SquareType squareType, int hintValue)
+    public Square(SquareType squareType)
     {
       SquareType = squareType;
-      SquareHintValue = hintValue;
       IsFlagged = false;
       IsRevealed = false;
     }
-
     public string SquareAsString()
     {
-      if (!this.IsRevealed && this.IsFlagged)
+      var nonRevealedSymbol = this.IsFlagged ? "F" : " ";
+      return this.IsRevealed ? this.GetSquareSymbol() : nonRevealedSymbol;
+    }
+  public string GetSquareSymbol()
+    {
+      return SquareType switch
       {
-        return "F";
-      }
-      if (this.IsRevealed && this.SquareType == SquareType.Safe)
-      {
-        var squareSymbol = this.SquareHintValue > 0 ? (this.SquareHintValue.ToString()) : (".");
-        return squareSymbol;
-      }
-      if (!this.IsRevealed)
-      {
-        return " ";
-      }
-      else
-      {
-        return "*";
-      }
+        SquareType.Zero => ".",
+        SquareType.One => "1",
+        SquareType.Two => "2",
+        SquareType.Three => "3",
+        SquareType.Four => "4",
+        SquareType.Five => "5",
+        SquareType.Six => "6",
+        SquareType.Seven => "7",
+        SquareType.Eight => "8",
+        SquareType.Mine => "*",
+        // _ => " "
+      };
     }
   }
 }
