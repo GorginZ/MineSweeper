@@ -11,11 +11,10 @@ namespace MineSweeper
       IsFlagged = false;
       IsRevealed = false;
     }
-
     public string SquareAsString()
     {
-      var unrevealedSymbol = this.IsFlagged ? "F" : " ";
-      return this.IsRevealed ? this.GetSquareSymbol() : unrevealedSymbol;
+      var nonRevealedSymbol = this.IsFlagged ? "F" : " ";
+      return this.IsRevealed ? this.GetSquareSymbol() : nonRevealedSymbol;
     }
   public string GetSquareSymbol()
     {
@@ -31,7 +30,7 @@ namespace MineSweeper
         SquareType.Seven => "7",
         SquareType.Eight => "8",
         SquareType.Mine => "*",
-        _ => " "
+        // _ => " "
       };
     }
   }
