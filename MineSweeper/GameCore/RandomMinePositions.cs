@@ -16,7 +16,7 @@ namespace MineSweeper
       _columnDimension = columnDimension;
       _numberOfMines = numberOfMines;
     }
-    public HashSet<RowColumn> GetMinePositions()
+    public IEnumerable<RowColumn> GetMinePositions()
     {
       if (_numberOfMines > (_rowDimension * _columnDimension))
       {

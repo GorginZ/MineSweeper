@@ -10,7 +10,8 @@ namespace MineSweeper
     private readonly Square[,] _field;
     public int RowDimension => _field.GetLength(0);
     public int ColumnDimension => _field.GetLength(1);
-    public int MineCount => Coordinates().Where(IsMine).Count();
+    public int MineCount => this.Count(square => square.SquareType == SquareType.Mine);
+
     public int RevealedCount => Coordinates().Where(IsRevealed).Count();
 
     private readonly IMinePositions _minePositioning;
@@ -26,7 +27,7 @@ namespace MineSweeper
     private void InitializeField()
     {
       FillFieldWithSquares();
-      HashSet<RowColumn> mines = _minePositioning.GetMinePositions();
+      var mines = _minePositioning.GetMinePositions();
       PlaceMines(mines);
       SetSquareHintValues();
     }
@@ -38,31 +39,31 @@ namespace MineSweeper
       }
     }
 
-    private void PlaceMines(HashSet<RowColumn> mines)
+    private void PlaceMines(IEnumerable<RowColumn> mines)
     {
       foreach (RowColumn index in mines)
       {
         this[index].SquareType = SquareType.Mine;
       }
     }
-    public HashSet<RowColumn> GetNeighboursOfSquare(int row, int column)
+    public IEnumerable<RowColumn> GetNeighboursOfSquare(int row, int column)
     {
       var leftNeighbour = (column - 1);
       var rightNeighbour = (column + 1);
       var upNeighbour = (row - 1);
       var downNeighbour = (row + 1);
 
-      HashSet<RowColumn> neighbourList = new HashSet<RowColumn>{
+      var neighbourList = new List<RowColumn>{
         new RowColumn(row, rightNeighbour), new RowColumn(row, leftNeighbour), new RowColumn(upNeighbour, column), new RowColumn(downNeighbour, column), new RowColumn(upNeighbour, rightNeighbour), new RowColumn(upNeighbour, leftNeighbour), new RowColumn(downNeighbour, rightNeighbour), new RowColumn(downNeighbour, leftNeighbour)
         };
-      neighbourList.RemoveWhere(OutOfRange);
+      neighbourList.RemoveAll(OutOfRange);
       return neighbourList;
     }
     private bool OutOfRange(RowColumn rowColumn)
     {
       return rowColumn.Row < 0 || rowColumn.Row >= _field.GetLength(0) || rowColumn.Column < 0 || rowColumn.Column >= _field.GetLength(1);
     }
-    public int AdjacentMineCount(HashSet<RowColumn> neighbourList)
+    public int AdjacentMineCount(IEnumerable<RowColumn> neighbourList)
     {
       int count = 0;
 
@@ -81,7 +82,7 @@ namespace MineSweeper
       {
         for (int column = 0; column < ColumnDimension; column++)
         {
-          HashSet<RowColumn> neighbours = GetNeighboursOfSquare(row, column);
+          var neighbours = GetNeighboursOfSquare(row, column);
           int value = AdjacentMineCount(neighbours);
           _field[row, column].SquareHintValue = value;
         }
