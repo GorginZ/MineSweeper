@@ -14,23 +14,25 @@ namespace MineSweeper
 
     public string SquareAsString()
     {
-      if (!this.IsRevealed && this.IsFlagged)
+      var unrevealedSymbol = this.IsFlagged ? "F" : " ";
+      return this.IsRevealed ? this.GetSquareSymbol() : unrevealedSymbol;
+    }
+  public string GetSquareSymbol()
+    {
+      return SquareType switch
       {
-        return "F";
-      }
-      if (this.IsRevealed && this.SquareType != SquareType.Mine)
-      {
-        var squareSymbol = this.SquareType > 0 ? (this.SquareType.ToString()) : (".");
-        return squareSymbol;
-      }
-      if (!this.IsRevealed)
-      {
-        return " ";
-      }
-      else
-      {
-        return "*";
-      }
+        SquareType.Zero => ".",
+        SquareType.One => "1",
+        SquareType.Two => "2",
+        SquareType.Three => "3",
+        SquareType.Four => "4",
+        SquareType.Five => "5",
+        SquareType.Six => "6",
+        SquareType.Seven => "7",
+        SquareType.Eight => "8",
+        SquareType.Mine => "*",
+        _ => " "
+      };
     }
   }
 }
