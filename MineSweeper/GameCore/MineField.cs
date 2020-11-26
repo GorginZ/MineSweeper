@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System;
 
 namespace MineSweeper
 {
@@ -35,7 +36,7 @@ namespace MineSweeper
     {
       foreach (var coord in Coordinates())
       {
-        _field[coord.Row, coord.Column] = new Square(SquareType.Safe, 0);
+        _field[coord.Row, coord.Column] = new Square(SquareType.Zero);
       }
     }
 
@@ -82,9 +83,12 @@ namespace MineSweeper
       {
         for (int column = 0; column < ColumnDimension; column++)
         {
-          var neighbours = GetNeighboursOfSquare(row, column);
-          int value = AdjacentMineCount(neighbours);
-          _field[row, column].SquareHintValue = value;
+          if (_field[row, column].SquareType != SquareType.Mine)
+          {
+            var neighbours = GetNeighboursOfSquare(row, column);
+            int value = AdjacentMineCount(neighbours);
+            _field[row, column].SquareType = (SquareType)value;
+          }
         }
       }
     }

@@ -3,13 +3,11 @@ namespace MineSweeper
   public class Square
   {
     public SquareType SquareType;
-    public int SquareHintValue;
     public bool IsFlagged;
     public bool IsRevealed;
-    public Square(SquareType squareType, int hintValue)
+    public Square(SquareType squareType)
     {
       SquareType = squareType;
-      SquareHintValue = hintValue;
       IsFlagged = false;
       IsRevealed = false;
     }
@@ -20,9 +18,9 @@ namespace MineSweeper
       {
         return "F";
       }
-      if (this.IsRevealed && this.SquareType == SquareType.Safe)
+      if (this.IsRevealed && this.SquareType != SquareType.Mine)
       {
-        var squareSymbol = this.SquareHintValue > 0 ? (this.SquareHintValue.ToString()) : (".");
+        var squareSymbol = this.SquareType > 0 ? (this.SquareType.ToString()) : (".");
         return squareSymbol;
       }
       if (!this.IsRevealed)
