@@ -7,8 +7,8 @@ namespace MineSweeper.Tests
     [Fact]
     public void CanReprsentSelfAsString()
     {
-      Square aMineSquare = new Square(SquareType.Mine);
-      Square aSafeSquare = new Square(SquareType.Four);
+      var aMineSquare = new Square(SquareType.Mine);
+      var aSafeSquare = new Square(SquareType.Four);
       aMineSquare.IsRevealed = true;
       aSafeSquare.IsRevealed = true;
       string mineSquare = aMineSquare.SquareAsString();

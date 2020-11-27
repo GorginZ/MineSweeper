@@ -22,7 +22,6 @@ namespace MineSweeper
       _minePositioning = minePositioning;
       InitializeField();
     }
-
     public Square this[RowColumn coord] => _field[coord.Row, coord.Column];
 
     private void InitializeField()
@@ -66,7 +65,7 @@ namespace MineSweeper
     }
     public int AdjacentMineCount(IEnumerable<RowColumn> neighbourList)
     {
-      int count = 0;
+      var count = 0;
 
       foreach (RowColumn index in neighbourList)
       {
@@ -116,10 +115,10 @@ namespace MineSweeper
         }
       }
     }
-    public bool IsMine(RowColumn index)
-    {
-      return SquareType.Mine == this[index].SquareType;
-    }
+    // public bool IsMine(RowColumn index)
+    // {
+    //   return SquareType.Mine == this[index].SquareType;
+    // }
     public bool IsRevealed(RowColumn index)
     {
       return this[index].IsRevealed;

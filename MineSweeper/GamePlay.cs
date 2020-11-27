@@ -13,7 +13,7 @@ namespace MineSweeper
         outPut.Write(game.GetCurrentField());
         game.HandleSelectedSquare(userInput.ParseInputToRowColumn());
 
-      } while (!game.HasWon() && !game.Haslost);
+      } while (!game.HasWon() && !game.PlayerLost);
       outPut.Write(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
       outPut.Write(endMessage);
