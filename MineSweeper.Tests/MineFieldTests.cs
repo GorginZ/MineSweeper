@@ -14,7 +14,13 @@ namespace MineSweeper.Tests
       Assert.True(field.RowDimension == 1);
       Assert.True(field.ColumnDimension == 2);
     }
-
+    [Fact]
+    public void MineFieldThatReceievesInvalidArgsThrowsArgumentException()
+    {
+      var minePlacement = new RandomMinePositions(0, 0, 0);
+      var ex = Assert.Throws<System.ArgumentException>(() => new MineField(0, 0, minePlacement));
+      Assert.Equal("row and column dimensions are below minimum usable value", ex.Message);
+    }
     [Fact]
     public void CanMakeSafeField()
     {
@@ -26,7 +32,7 @@ namespace MineSweeper.Tests
     [Fact]
     public void CanAlwaysAllocatePositionsForFullNumberOfMines()
     {
-      var minePlacement = new RandomMinePositions(5,5, 25);
+      var minePlacement = new RandomMinePositions(5, 5, 25);
       var field = new MineField(5, 5, minePlacement);
       Assert.Equal(25, field.MineCount);
     }

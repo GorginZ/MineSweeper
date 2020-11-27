@@ -23,12 +23,12 @@ namespace MineSweeper.ConsoleImplementation
       Console.WriteLine("Enter dimensions you want for your field");
       var userInput = Console.ReadLine();
 
-      if (CheckInput(userInput))
-      {
+      // if (CheckInput(userInput))
+      // {
         SquareDimensions = int.Parse(userInput);
         return;
-      }
-      while (!CheckInput(userInput)) ;
+      // }
+      // while (!CheckInput(userInput)) ;
     }
     public void GetValidInput(string userInput)
     {
