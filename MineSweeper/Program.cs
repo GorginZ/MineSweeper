@@ -10,10 +10,10 @@ namespace MineSweeper
     {
       var userInput = new ConsoleInput();
       var outPut = new ConsoleOutput();
-      // userInput.PromptDimensions();
-      userInput.SquareDimensions = 5;
-      // var minePositioning = new RandomMinePositions(userInput.SquareDimensions, userInput.SquareDimensions, userInput.SquareDimensions);
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn>{new RowColumn(1,1)});
+      userInput.PromptDimensions();
+      // userInput.SquareDimensions = 0;
+      var minePositioning = new RandomMinePositions(userInput.SquareDimensions, userInput.SquareDimensions, userInput.SquareDimensions);
+      // var minePositioning = new SetMinePositions(new HashSet<RowColumn>{});
       var mineField = new MineField(userInput.SquareDimensions, userInput.SquareDimensions, minePositioning);
       GamePlay.Run(outPut, userInput, mineField);
     }

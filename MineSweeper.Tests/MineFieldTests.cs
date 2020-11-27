@@ -26,7 +26,7 @@ namespace MineSweeper.Tests
     [Fact]
     public void CanAlwaysAllocatePositionsForFullNumberOfMines()
     {
-      var minePlacement = new RandomMinePositions(5, 5, 25);
+      var minePlacement = new RandomMinePositions(5,5, 25);
       var field = new MineField(5, 5, minePlacement);
       Assert.Equal(25, field.MineCount);
     }

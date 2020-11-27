@@ -12,9 +12,6 @@ namespace MineSweeper.Tests
       var ex = Assert.Throws<System.ArgumentException>(() => minePositions.GetMinePositions());
 
       Assert.Equal("numberOfMines exceeds array dimensions (Parameter '10')", ex.Message);
-
     }
   }
-
-
 }

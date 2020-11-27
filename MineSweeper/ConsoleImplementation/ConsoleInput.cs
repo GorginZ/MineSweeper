@@ -20,17 +20,17 @@ namespace MineSweeper.ConsoleImplementation
     }
     public void PromptDimensions()
     {
+      Console.WriteLine("Enter dimensions you want for your field (range 3-50)");
+      var userInput = Console.ReadLine();
       do
       {
-        Console.WriteLine("Enter dimensions you want for your field (rang 3-50)");
-        var userInput = Console.ReadLine();
         CheckInput(userInput);
         if (CheckInput(userInput))
         {
           SquareDimensions = int.Parse(userInput);
           return;
         }
-      } while (!CheckInput(Console.ReadLine()));
+      } while (!CheckInput(userInput));
     }
 
     public static bool CheckInput(string input)
