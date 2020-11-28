@@ -37,11 +37,11 @@ namespace MineSweeper.ConsoleImplementation
     // //   userInput = Console.ReadLine();
     // // }
 
-    // public static bool CheckInput(string input)
-    // {
-    //   int.TryParse(input, out int number);
-    //   return number >= 3 && number < 30;
-    // }
+    public static bool CheckInput(string input)
+    {
+      int.TryParse(input, out int number);
+      return number >= 3 && number < 30;
+    }
     public RowColumn ParseInputToRowColumn()
     {
       var input = Console.ReadLine();
