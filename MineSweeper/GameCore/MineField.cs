@@ -23,26 +23,24 @@ namespace MineSweeper
       }
       _field = new Square[rowDimension, columnDimension];
       _minePositioning = minePositioning;
-      //try
-      InitializeField();
-    }
-    public Square this[RowColumn coord] => _field[coord.Row, coord.Column];
-
-    private void InitializeField()
-    {
       try
       {
-        FillFieldWithSquares();
-        var mines = _minePositioning.GetMinePositions();
-        PlaceMines(mines);
-        SetSquareHintValues();
-
+        InitializeField();
       }
       catch (IndexOutOfRangeException)
       {
         throw new Exception("Mine list contains elements greater than field array dimensions");
         //delete this object/clean up memory
       }
+    }
+    public Square this[RowColumn coord] => _field[coord.Row, coord.Column];
+
+    private void InitializeField()
+    {
+      FillFieldWithSquares();
+      var mines = _minePositioning.GetMinePositions();
+      PlaceMines(mines);
+      SetSquareHintValues();
     }
     private void FillFieldWithSquares()
     {
