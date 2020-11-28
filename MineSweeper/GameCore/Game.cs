@@ -20,23 +20,28 @@ namespace MineSweeper
     }
     public void HandleSelectedSquare(RowColumn squareIndex)
     {
-      //exception here
-      if (_field[squareIndex].SquareType == SquareType.Mine)
+      try
       {
-        FindAndRevealMines();
-        this.PlayerLost = true;
+        if (_field[squareIndex].SquareType == SquareType.Mine)
+        {
+          FindAndRevealMines();
+          this.PlayerLost = true;
+        }
+        if (_field[squareIndex].IsRevealed)
+        {
+          return;
+        }
+        if (_field[squareIndex].SquareType != SquareType.Mine || _field[squareIndex].SquareType != 0)
+        {
+          _field[squareIndex].IsRevealed = true;
+        }
+        if (_field[squareIndex].SquareType == 0)
+        {
+          RevealAllAssociatedAdjacentSquaresProcess(squareIndex);
+        }
       }
-      if (_field[squareIndex].IsRevealed)
+      catch (IndexOutOfRangeException)
       {
-        return;
-      }
-      if (_field[squareIndex].SquareType != SquareType.Mine || _field[squareIndex].SquareType != 0)
-      {
-        _field[squareIndex].IsRevealed = true;
-      }
-      if (_field[squareIndex].SquareType == 0)
-      {
-        RevealAllAssociatedAdjacentSquaresProcess(squareIndex);
       }
     }
     public void RevealAllAssociatedAdjacentSquaresProcess(RowColumn selectedSquare)
@@ -47,11 +52,6 @@ namespace MineSweeper
         HandleSelectedSquare(index);
       }
     }
-    // is mine, maybedon't need this, can just be like 'is mine' kept in mienfield coz it's usd as a perdicate for other funcs
-    // public bool IsMine(RowColumn index)
-    // {
-    //   return SquareType.Mine == _field[index].SquareType;
-    // }
     private void FindAndRevealMines()
     {
       foreach (var square in _field.Where(square => square.SquareType == SquareType.Mine))
