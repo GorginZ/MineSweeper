@@ -28,7 +28,6 @@ namespace MineSweeper.Tests
       var field = new MineField(5, 5, minePlacement);
       Assert.Equal(0, field.MineCount);
     }
-
     [Fact]
     public void CanAlwaysAllocatePositionsForFullNumberOfMines()
     {
@@ -50,5 +49,16 @@ namespace MineSweeper.Tests
       game.HandleSelectedSquare(new RowColumn(0, 4));
       Assert.Equal(expectedField, game.GetCurrentField());
     }
+    [Fact]
+    public void ThrowsExceptionIfSetMinesHasAnOutOfIndexItem()
+    {
+      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(5, 4) });
+      var mineField = new MineField(5, 5, minePositioning);
+      var game = new Game(mineField);
+      var ex = Assert.Throws<System.Exception>(() => new MineField(0, 0, minePositioning));
+      Assert.Equal("Mine list contains elements greater than field array dimensions", ex.Message);
+
+    }
+
   }
 }

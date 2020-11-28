@@ -30,18 +30,18 @@ namespace MineSweeper.ConsoleImplementation
       // }
       // while (!CheckInput(userInput)) ;
     }
-    public void GetValidInput(string userInput)
-    {
-      Console.WriteLine("dimensions must be between 3 and 30");
-      CheckInput(userInput);
-      userInput = Console.ReadLine();
-    }
+    // // public void GetValidInput(string userInput)
+    // // {
+    // //   Console.WriteLine("dimensions must be between 3 and 30");
+    // //   CheckInput(userInput);
+    // //   userInput = Console.ReadLine();
+    // // }
 
-    public static bool CheckInput(string input)
-    {
-      int.TryParse(input, out int number);
-      return number >= 3 && number < 30;
-    }
+    // public static bool CheckInput(string input)
+    // {
+    //   int.TryParse(input, out int number);
+    //   return number >= 3 && number < 30;
+    // }
     public RowColumn ParseInputToRowColumn()
     {
       var input = Console.ReadLine();

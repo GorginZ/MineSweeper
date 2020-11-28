@@ -20,6 +20,7 @@ namespace MineSweeper
     }
     public void HandleSelectedSquare(RowColumn squareIndex)
     {
+      //exception here
       if (_field[squareIndex].SquareType == SquareType.Mine)
       {
         FindAndRevealMines();
