@@ -17,10 +17,10 @@ namespace MineSweeper
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
     {
-      // if (rowDimension < 2 || columnDimension < 2)
-      // {
-      //   throw new ArgumentException("row and column dimensions are below minimum usable value");
-      // }
+      if (rowDimension < 2 || columnDimension < 2)
+      {
+        throw new ArgumentException("row and column dimensions are below minimum usable value");
+      }
       _field = new Square[rowDimension, columnDimension];
       _minePositioning = minePositioning;
       //try
