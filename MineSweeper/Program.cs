@@ -10,7 +10,7 @@ namespace MineSweeper
     {
       var userInput = new ConsoleInput();
       var outPut = new ConsoleOutput();
-      userInput.PromptDimensions();
+      userInput.GetValidDimensions();
       // userInput.SquareDimensions = 0;
       var minePositioning = new RandomMinePositions(userInput.SquareDimensions, userInput.SquareDimensions, userInput.SquareDimensions);
       // var minePositioning = new SetMinePositions(new HashSet<RowColumn>{});

@@ -9,14 +9,24 @@ namespace MineSweeper
       var game = new Game(mineField);
       do
       {
-        outPut.Write("Enter a row column index to 'hit'");
-        outPut.Write(game.GetCurrentField());
-        game.HandleSelectedSquare(userInput.ParseInputToRowColumn());
+        try
+        {
+          ProcessTurn(outPut, userInput, game);
+        }
+        catch (FormatException)
+        {
+        }
 
       } while (!game.HasWon() && !game.PlayerLost);
       outPut.Write(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
       outPut.Write(endMessage);
+    }
+    public static void ProcessTurn(IOutPut outPut, IUserInput userInput, Game game)
+    {
+      outPut.Write("Enter a row column index to 'hit'");
+      outPut.Write(game.GetCurrentField());
+      game.HandleSelectedSquare(userInput.ParseInputToRowColumn());
     }
   }
 }
