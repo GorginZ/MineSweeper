@@ -38,34 +38,13 @@ namespace MineSweeper.ConsoleImplementation
       int.TryParse(input, out int number);
       return number >= 3 && number < 30;
     }
-    public void GetValidSquareSelection()
-    {
-      do
-      {
-        try
-        {
-          ParseInputToRowColumn();
-        }
-        catch (IndexOutOfRangeException)
-        { }
-      }
-      while ();
-    }
     public RowColumn ParseInputToRowColumn()
     {
-      while(!IsValidRowColInput(chars))
       {
         var input = Console.ReadLine();
         var chars = input.Split(" ", StringSplitOptions.None);
-        try
-        {
-          return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
-        }
-        catch (IndexOutOfRangeException)
-        {
-        }
+        return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
       }
     }
-    public static bool IsValidRowColInput(string[] chars) => chars.Length == 2;
   }
 }

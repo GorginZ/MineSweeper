@@ -29,7 +29,7 @@ namespace MineSweeper
       }
       catch (IndexOutOfRangeException)
       {
-        throw new Exception("Mine list contains elements greater than field array dimensions");
+        throw new ArgumentException("Mine list contains elements greater than field array dimensions");
         //delete this object/clean up memory
       }
     }

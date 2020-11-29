@@ -13,10 +13,12 @@ namespace MineSweeper
         {
           ProcessTurn(outPut, userInput, game);
         }
-        catch (FormatException)
+        catch (Exception ex) when (
+    ex is IndexOutOfRangeException
+    || ex is FormatException
+)
         {
         }
-
       } while (!game.HasWon() && !game.PlayerLost);
       outPut.Write(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
