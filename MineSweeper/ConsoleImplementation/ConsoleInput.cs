@@ -5,19 +5,11 @@ namespace MineSweeper.ConsoleImplementation
 {
   public class ConsoleInput : IUserInput
   {
-    //does this need to be a property?
-    public int SquareDimensions;
-    public RowColumn SquareSelection;
     public void Read() => Console.ReadLine();
-
-    public string ReadInput(string askThis)
+    public int GetValidDimensions()
     {
-      Console.WriteLine(askThis);
-      return Console.ReadLine();
-    }
-    public void GetValidDimensions()
-    {
-      var userInput = "";
+      int squareDimensions = 0;
+      string userInput;
       do
       {
         Console.WriteLine("Enter dimensions you want for your field (bw 3-30)");
@@ -25,13 +17,14 @@ namespace MineSweeper.ConsoleImplementation
         try
         {
           IsValidDimension(userInput);
-          SquareDimensions = int.Parse(userInput);
+          squareDimensions = int.Parse(userInput);
         }
         catch (FormatException)
         {
           Console.WriteLine("Please enter a number");
         }
       } while (!IsValidDimension(userInput));
+      return squareDimensions;
     }
     public static bool IsValidDimension(string input)
     {

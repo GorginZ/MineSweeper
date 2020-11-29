@@ -30,7 +30,6 @@ namespace MineSweeper
       catch (IndexOutOfRangeException)
       {
         throw new ArgumentException("Mine list contains elements greater than field array dimensions");
-        //delete this object/clean up memory
       }
     }
     public Square this[RowColumn coord] => _field[coord.Row, coord.Column];
@@ -52,7 +51,6 @@ namespace MineSweeper
 
     private void PlaceMines(IEnumerable<RowColumn> mines)
     {
-      //try or throw somth here if out of bounds
       foreach (RowColumn index in mines)
       {
         this[index].SquareType = SquareType.Mine;
