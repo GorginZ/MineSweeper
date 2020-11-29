@@ -5,10 +5,10 @@ namespace MineSweeper.Tests
 {
   public class EndToEndTests
   {
-    public void WinWhenRevealedAllExceptMines()
-    {
+    // public void WinWhenRevealedAllExceptMines()
+    // {
 
-    }
+    // }
     // public void LoseWhenHitMine()
     // {
     //   var userInput = new ConsoleInput();
