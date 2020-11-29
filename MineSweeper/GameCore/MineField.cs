@@ -12,7 +12,7 @@ namespace MineSweeper
     public int RowDimension => _field.GetLength(0);
     public int ColumnDimension => _field.GetLength(1);
     public int MineCount => this.Count(square => square.SquareType == SquareType.Mine);
-    public int RevealedCount => Coordinates().Where(IsRevealed).Count();
+    public int RevealedCount => Indexes().Where(IsRevealed).Count();
 
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
@@ -43,9 +43,9 @@ namespace MineSweeper
     }
     private void FillFieldWithSquares()
     {
-      foreach (var coord in Coordinates())
+      foreach (var index in Indexes())
       {
-        _field[coord.Row, coord.Column] = new Square(SquareType.Zero);
+        _field[index.Row, index.Column] = new Square(SquareType.Zero);
       }
     }
     private void PlaceMines(IEnumerable<RowColumn> mines)
@@ -113,7 +113,7 @@ namespace MineSweeper
       return printableField.ToString();
     }
 
-    public IEnumerable<RowColumn> Coordinates()
+    public IEnumerable<RowColumn> Indexes()
     {
       for (int row = 0; row < RowDimension; row++)
       {

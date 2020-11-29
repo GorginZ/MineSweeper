@@ -18,38 +18,38 @@ namespace MineSweeper
     {
       return this._field.FieldAsString();
     }
-    public void HandleSelectedSquare(RowColumn squareIndex)
+    public void HandleSelectedSquare(RowColumn index)
     {
       try
       {
-        if (_field[squareIndex].SquareType == SquareType.Mine)
+        if (_field[index].SquareType == SquareType.Mine)
         {
           FindAndRevealMines();
           this.PlayerLost = true;
         }
-        if (_field[squareIndex].IsRevealed)
+        if (_field[index].IsRevealed)
         {
           return;
         }
-        if (_field[squareIndex].SquareType != SquareType.Mine || _field[squareIndex].SquareType != 0)
+        if (_field[index].SquareType != SquareType.Mine || _field[index].SquareType != 0)
         {
-          _field[squareIndex].IsRevealed = true;
+          _field[index].IsRevealed = true;
         }
-        if (_field[squareIndex].SquareType == 0)
+        if (_field[index].SquareType == 0)
         {
-          RevealAllAssociatedAdjacentSquaresProcess(squareIndex);
+          RevealAllAssociatedAdjacentSquaresProcess(index);
         }
       }
       catch (IndexOutOfRangeException)
       {
       }
     }
-    public void RevealAllAssociatedAdjacentSquaresProcess(RowColumn selectedSquare)
+    public void RevealAllAssociatedAdjacentSquaresProcess(RowColumn index)
     {
-      var neighbours = _field.GetNeighboursOfSquare(selectedSquare.Row, selectedSquare.Column);
-      foreach (RowColumn index in neighbours)
+      var neighbours = _field.GetNeighboursOfSquare(index.Row, index.Column);
+      foreach (RowColumn rowCol in neighbours)
       {
-        HandleSelectedSquare(index);
+        HandleSelectedSquare(rowCol);
       }
     }
     private void FindAndRevealMines()
@@ -59,9 +59,9 @@ namespace MineSweeper
         square.IsRevealed = true;
       }
     }
-    public void FlagSquare(RowColumn selectedSquare)
+    public void FlagSquare(RowColumn index)
     {
-      _field[selectedSquare].IsFlagged = true;
+      _field[index].IsFlagged = true;
     }
     public bool HasWon()
     {
