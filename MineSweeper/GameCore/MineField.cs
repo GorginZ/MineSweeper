@@ -77,7 +77,7 @@ namespace MineSweeper
       var count = 0;
       foreach (RowColumn index in neighbourList)
       {
-        if (_field[index.Row, index.Column].SquareType == SquareType.Mine)
+        if (this[index].SquareType == SquareType.Mine)
         {
           count++;
         }
