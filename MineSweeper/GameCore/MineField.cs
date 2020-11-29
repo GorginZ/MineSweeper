@@ -48,7 +48,6 @@ namespace MineSweeper
         _field[coord.Row, coord.Column] = new Square(SquareType.Zero);
       }
     }
-
     private void PlaceMines(IEnumerable<RowColumn> mines)
     {
       foreach (RowColumn index in mines)
@@ -58,10 +57,10 @@ namespace MineSweeper
     }
     public IEnumerable<RowColumn> GetNeighboursOfSquare(int row, int column)
     {
-      var leftNeighbour = (column - 1);
-      var rightNeighbour = (column + 1);
-      var upNeighbour = (row - 1);
-      var downNeighbour = (row + 1);
+      var leftNeighbour = column - 1;
+      var rightNeighbour = column + 1;
+      var upNeighbour = row - 1;
+      var downNeighbour = row + 1;
 
       var neighbourList = new List<RowColumn>{
         new RowColumn(row, rightNeighbour), new RowColumn(row, leftNeighbour), new RowColumn(upNeighbour, column), new RowColumn(downNeighbour, column), new RowColumn(upNeighbour, rightNeighbour), new RowColumn(upNeighbour, leftNeighbour), new RowColumn(downNeighbour, rightNeighbour), new RowColumn(downNeighbour, leftNeighbour)
@@ -76,7 +75,6 @@ namespace MineSweeper
     public int AdjacentMineCount(IEnumerable<RowColumn> neighbourList)
     {
       var count = 0;
-
       foreach (RowColumn index in neighbourList)
       {
         if (_field[index.Row, index.Column].SquareType == SquareType.Mine)

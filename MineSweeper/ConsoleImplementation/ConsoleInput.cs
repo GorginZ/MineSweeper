@@ -5,15 +5,18 @@ namespace MineSweeper.ConsoleImplementation
 {
   public class ConsoleInput : IUserInput
   {
-    public void Read() => Console.ReadLine();
+    public string ReadInput(string askThis)
+    {
+      Console.WriteLine(askThis);
+      return Console.ReadLine();
+    }
     public int GetValidDimensions()
     {
       int squareDimensions = 0;
       string userInput;
       do
       {
-        Console.WriteLine("Enter dimensions you want for your field (bw 3-30)");
-        userInput = Console.ReadLine();
+        userInput = ReadInput("Enter dimensions you want for your field (bw 3 - 30");
         try
         {
           IsValidDimension(userInput);
