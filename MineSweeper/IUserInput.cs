@@ -2,7 +2,7 @@ namespace MineSweeper
 {
   public interface IUserInput
   {
-    void Read();
+    string ReadInput(string message);
     RowColumn ParseInputToRowColumn();
   }
 }

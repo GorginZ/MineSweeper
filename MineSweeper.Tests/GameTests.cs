@@ -99,5 +99,14 @@ namespace MineSweeper.Tests
       var actualFlagField = game.GetCurrentField();
       Assert.Equal(expectedFlagField, actualFlagField);
     }
+    [Fact]
+    public void ShouldNotThrowIndexOutOfRange()
+    {
+      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0) });
+      var mineField = new MineField(3, 3, minePositioning);
+      var game = new Game(mineField);
+      game.HandleSelectedSquare(new RowColumn(6, 6));
+      //write an assert does not throw
+    }
   }
 }

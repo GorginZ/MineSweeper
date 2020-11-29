@@ -10,39 +10,37 @@ namespace MineSweeper.ConsoleImplementation
       Console.WriteLine(askThis);
       return Console.ReadLine();
     }
-    public int SquareDimensions;
-    public RowColumn SquareSelection;
-    public void Read() => Console.ReadLine();
-
-    public void SetRange()
+    public int GetValidDimensions()
     {
-      PromptDimensions();
-    }
-    public void PromptDimensions()
-    {
+      int squareDimensions = 0;
+      string userInput;
       do
       {
-        Console.WriteLine("Enter dimensions you want for your field (rang 3-50)");
-        var userInput = Console.ReadLine();
-        CheckInput(userInput);
-        if (CheckInput(userInput))
+        userInput = ReadInput("Enter dimensions you want for your field (bw 3 - 30");
+        try
         {
-          SquareDimensions = int.Parse(userInput);
-          return;
+          IsValidDimension(userInput);
+          squareDimensions = int.Parse(userInput);
         }
-      } while (!CheckInput(Console.ReadLine()));
+        catch (FormatException)
+        {
+          Console.WriteLine("Please enter a number");
+        }
+      } while (!IsValidDimension(userInput));
+      return squareDimensions;
     }
-
-    public static bool CheckInput(string input)
+    public static bool IsValidDimension(string input)
     {
       int.TryParse(input, out int number);
       return number >= 3 && number < 30;
     }
     public RowColumn ParseInputToRowColumn()
     {
-      var input = Console.ReadLine();
-      var chars = input.Split(" ", StringSplitOptions.None);
-      return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
+      {
+        var input = Console.ReadLine();
+        var chars = input.Split(" ", StringSplitOptions.None);
+        return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
+      }
     }
   }
 }

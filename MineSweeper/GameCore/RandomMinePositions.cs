@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace MineSweeper
 {
-
   public class RandomMinePositions : IMinePositions
   {
     private readonly int _rowDimension;
@@ -38,6 +37,5 @@ namespace MineSweeper
       }
       return minesPositions;
     }
-
   }
 }

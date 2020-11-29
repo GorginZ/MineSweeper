@@ -1,3 +1,5 @@
+using System;
+
 namespace MineSweeper
 {
   public class Square
@@ -16,7 +18,7 @@ namespace MineSweeper
       var nonRevealedSymbol = this.IsFlagged ? "F" : " ";
       return this.IsRevealed ? this.GetSquareSymbol() : nonRevealedSymbol;
     }
-  public string GetSquareSymbol()
+    public string GetSquareSymbol()
     {
       return SquareType switch
       {
@@ -30,7 +32,7 @@ namespace MineSweeper
         SquareType.Seven => "7",
         SquareType.Eight => "8",
         SquareType.Mine => "*",
-        // _ => " "
+        _ => throw new ArgumentException(nameof(SquareType))
       };
     }
   }

@@ -9,12 +9,18 @@ namespace MineSweeper.Tests
     [Fact]
     public void MineFieldIsOfSpecifiedDimensions()
     {
-      var minePlacement = new RandomMinePositions(1, 2, 1);
-      var field = new MineField(1, 2, minePlacement);
-      Assert.True(field.RowDimension == 1);
+      var minePlacement = new RandomMinePositions(2, 2, 1);
+      var field = new MineField(2, 2, minePlacement);
+      Assert.True(field.RowDimension == 2);
       Assert.True(field.ColumnDimension == 2);
     }
-
+    [Fact]
+    public void MineFieldThatReceievesInvalidArgsThrowsArgumentException()
+    {
+      var minePlacement = new RandomMinePositions(0, 0, 0);
+      var ex = Assert.Throws<ArgumentException>(() => new MineField(0, 0, minePlacement));
+      Assert.Equal("row and column dimensions are below minimum usable value", ex.Message);
+    }
     [Fact]
     public void CanMakeSafeField()
     {
@@ -22,7 +28,6 @@ namespace MineSweeper.Tests
       var field = new MineField(5, 5, minePlacement);
       Assert.Equal(0, field.MineCount);
     }
-
     [Fact]
     public void CanAlwaysAllocatePositionsForFullNumberOfMines()
     {
@@ -43,6 +48,13 @@ namespace MineSweeper.Tests
                         + "     \n";
       game.HandleSelectedSquare(new RowColumn(0, 4));
       Assert.Equal(expectedField, game.GetCurrentField());
+    }
+    [Fact]
+    public void ThrowsExceptionIfSetMinesHasAnOutOfIndexItem()
+    {
+      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(5, 4) });
+      var ex = Assert.Throws<ArgumentException>(() => new MineField(3, 3, minePositioning));
+      Assert.Equal("Mine list contains elements greater than field array dimensions", ex.Message);
     }
   }
 }
