@@ -86,16 +86,13 @@ namespace MineSweeper
     }
     private void SetSquareHintValues()
     {
-      for (int row = 0; row < RowDimension; row++)
+      foreach (RowColumn index in Indexes())
       {
-        for (int column = 0; column < ColumnDimension; column++)
+        if (this[index].SquareType != SquareType.Mine)
         {
-          if (_field[row, column].SquareType != SquareType.Mine)
-          {
-            var neighbours = GetNeighboursOfSquare(row, column);
-            int value = AdjacentMineCount(neighbours);
-            _field[row, column].SquareType = (SquareType)value;
-          }
+          var neighbours = GetNeighboursOfSquare(index.Row, index.Column);
+          int value = AdjacentMineCount(neighbours);
+          this[index].SquareType = (SquareType)value;
         }
       }
     }
