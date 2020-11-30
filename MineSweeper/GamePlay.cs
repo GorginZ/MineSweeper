@@ -23,7 +23,6 @@ namespace MineSweeper
       {
         try
         {
-          // _outPut.Write(game.GetCurrentField());
           _outPut.Render(game.GetCurrentField());
           ProcessTurn(game);
         }
@@ -31,7 +30,6 @@ namespace MineSweeper
         {
         }
       } while (!game.HasWon() && !game.PlayerLost);
-      // _outPut.Write(game.GetCurrentField());
       _outPut.Render(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
       _outPut.Write(endMessage);
