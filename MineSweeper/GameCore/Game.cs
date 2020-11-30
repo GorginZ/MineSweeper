@@ -18,7 +18,7 @@ namespace MineSweeper
     {
       return this._field.FieldAsString();
     }
-    public void HandleSelectedSquare(RowColumn index)
+    public void HitSelectedSquare(RowColumn index)
     {
       try
       {
@@ -49,7 +49,7 @@ namespace MineSweeper
       var neighbours = _field.GetNeighboursOfSquare(index.Row, index.Column);
       foreach (RowColumn rowCol in neighbours)
       {
-        HandleSelectedSquare(rowCol);
+        HitSelectedSquare(rowCol);
       }
     }
     private void FindAndRevealMines()

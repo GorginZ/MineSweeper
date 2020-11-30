@@ -5,6 +5,21 @@ namespace MineSweeper.Tests
 {
   public class IntegrationTests
   {
+    [Fact]
+    public void SquareHintValuesAreAccuratelyCalculated()
+    {
+      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(4, 4) });
+      var mineField = new MineField(5, 5, minePositioning);
+      var game = new Game(mineField);
+      var expectedField = " 1...\n"
+                        + " 211.\n"
+                        + "   1.\n"
+                        + "   21\n"
+                        + "     \n";
+      game.HitSelectedSquare(new RowColumn(0, 4));
+      Assert.Equal(expectedField, game.GetCurrentField());
+    }
+
     // [Fact]
     // public void CantLoseOnFirstClickMovesMineToTopLeftReCalculatesSquareHints()
     // {

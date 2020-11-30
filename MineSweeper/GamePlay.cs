@@ -15,7 +15,8 @@ namespace MineSweeper
     public void Run()
     {
       var dimensions = GetValidDimensions();
-      var minePositioning = new RandomMinePositions(dimensions, dimensions, dimensions);
+      var noOfMines = GetNumberOfMines(dimensions);
+      var minePositioning = new RandomMinePositions(dimensions, dimensions, noOfMines);
       var mineField = new MineField(dimensions, dimensions, minePositioning);
       var game = new Game(mineField);
       do
@@ -23,16 +24,7 @@ namespace MineSweeper
         try
         {
           _outPut.Write(game.GetCurrentField());
-          var action = _inPut.ReadInput("'H' to hit 'F' to Flag");
-          if (action == "H")
-          {
-            game.HandleSelectedSquare(ParseInputToRowColumn());
-          }
-          if (action == "F")
-          {
-            game.FlagSquare(ParseInputToRowColumn());
-          }
-
+          ProcessTurn(game);
         }
         catch (Exception ex) when (ex is IndexOutOfRangeException || ex is FormatException)
         {
@@ -41,6 +33,19 @@ namespace MineSweeper
       _outPut.Write(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
       _outPut.Write(endMessage);
+    }
+
+    public void ProcessTurn(Game game)
+    {
+      var action = _inPut.ReadInput("'H' to hit 'F' to Flag");
+      if (action == "H")
+      {
+        game.HitSelectedSquare(ParseInputToRowColumn());
+      }
+      if (action == "F")
+      {
+        game.FlagSquare(ParseInputToRowColumn());
+      }
     }
 
     public int GetValidDimensions()
@@ -66,6 +71,19 @@ namespace MineSweeper
     {
       int.TryParse(input, out int number);
       return number >= 3 && number < 30;
+    }
+    public int GetNumberOfMines(int dimensions)
+    {
+      bool parsed;
+      int result;
+      do
+      {
+        var userInput = _inPut.ReadInput("How Many mines?");
+        parsed = int.TryParse(userInput, out int outInt);
+        result = outInt;
+      }
+      while (!parsed || result > dimensions);
+      return result;
     }
     public RowColumn ParseInputToRowColumn()
     {
