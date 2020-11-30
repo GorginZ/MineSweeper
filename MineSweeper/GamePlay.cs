@@ -20,6 +20,7 @@ namespace MineSweeper
       var minePositioning = new RandomMinePositions(rowDimensions, colDimensions, noOfMines);
       var mineField = new MineField(rowDimensions, colDimensions, minePositioning);
       var game = new Game(mineField);
+      //handle first hit and re-arrange upon loss
       do
       {
         try
@@ -55,7 +56,7 @@ namespace MineSweeper
       string userInput;
       do
       {
-        userInput = _inPut.ReadInput("Enter a value for field dimensions (bw 3 - 30");
+        userInput = _inPut.ReadInput("Enter a value for field dimensions (bw 3 - 30, recommended: 15 rows 30 columns )");
         try
         {
           IsValidDimension(userInput);
