@@ -23,7 +23,16 @@ namespace MineSweeper
         try
         {
           _outPut.Write(game.GetCurrentField());
-          game.HandleSelectedSquare(ParseInputToRowColumn());
+          var action = _inPut.ReadInput("'H' to hit 'F' to Flag");
+          if (action == "H")
+          {
+            game.HandleSelectedSquare(ParseInputToRowColumn());
+          }
+          if (action == "F")
+          {
+            game.FlagSquare(ParseInputToRowColumn());
+          }
+
         }
         catch (Exception ex) when (ex is IndexOutOfRangeException || ex is FormatException)
         {
@@ -61,7 +70,7 @@ namespace MineSweeper
     public RowColumn ParseInputToRowColumn()
     {
       {
-        var input = _inPut.ReadInput("enter a Square to Hit eg: '0 0'");
+        var input = _inPut.ReadInput("enter a row column eg: '0 0'");
         var chars = input.Split(" ", StringSplitOptions.None);
         return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
       }
