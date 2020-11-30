@@ -12,7 +12,7 @@ namespace MineSweeper
     public int RowDimension => _field.GetLength(0);
     public int ColumnDimension => _field.GetLength(1);
     public int MineCount => this.Count(square => square.SquareType == SquareType.Mine);
-    public int RevealedCount => Coordinates().Where(IsRevealed).Count();
+    public int RevealedCount => Indexes().Where(IsRevealed).Count();
 
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
@@ -43,9 +43,9 @@ namespace MineSweeper
     }
     private void FillFieldWithSquares()
     {
-      foreach (var coord in Coordinates())
+      foreach (var index in Indexes())
       {
-        _field[coord.Row, coord.Column] = new Square(SquareType.Zero);
+        _field[index.Row, index.Column] = new Square(SquareType.Zero);
       }
     }
     private void PlaceMines(IEnumerable<RowColumn> mines)
@@ -86,16 +86,13 @@ namespace MineSweeper
     }
     private void SetSquareHintValues()
     {
-      for (int row = 0; row < RowDimension; row++)
+      foreach (RowColumn index in Indexes())
       {
-        for (int column = 0; column < ColumnDimension; column++)
+        if (this[index].SquareType != SquareType.Mine)
         {
-          if (_field[row, column].SquareType != SquareType.Mine)
-          {
-            var neighbours = GetNeighboursOfSquare(row, column);
-            int value = AdjacentMineCount(neighbours);
-            _field[row, column].SquareType = (SquareType)value;
-          }
+          var neighbours = GetNeighboursOfSquare(index.Row, index.Column);
+          int value = AdjacentMineCount(neighbours);
+          this[index].SquareType = (SquareType)value;
         }
       }
     }
@@ -113,7 +110,7 @@ namespace MineSweeper
       return printableField.ToString();
     }
 
-    public IEnumerable<RowColumn> Coordinates()
+    public IEnumerable<RowColumn> Indexes()
     {
       for (int row = 0; row < RowDimension; row++)
       {
