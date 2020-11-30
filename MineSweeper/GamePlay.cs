@@ -23,14 +23,16 @@ namespace MineSweeper
       {
         try
         {
-          _outPut.Write(game.GetCurrentField());
+          // _outPut.Write(game.GetCurrentField());
+          _outPut.Render(game.GetCurrentField());
           ProcessTurn(game);
         }
         catch (Exception ex) when (ex is IndexOutOfRangeException || ex is FormatException)
         {
         }
       } while (!game.HasWon() && !game.PlayerLost);
-      _outPut.Write(game.GetCurrentField());
+      // _outPut.Write(game.GetCurrentField());
+      _outPut.Render(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
       _outPut.Write(endMessage);
     }

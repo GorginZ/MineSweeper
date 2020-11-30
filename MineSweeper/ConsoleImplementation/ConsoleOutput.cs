@@ -9,5 +9,13 @@ namespace MineSweeper.ConsoleImplementation
     {
       Console.WriteLine(printThis);
     }
+    public void Render(string field)
+    {
+      Console.Clear();
+      this.Write("\n\n\n");
+      this.Write("-----MINESWEEPER-----");
+      this.Write(field);
+      this.Write("---------------------");
+    }
   }
 }
