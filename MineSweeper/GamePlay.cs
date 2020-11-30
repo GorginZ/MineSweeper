@@ -14,10 +14,11 @@ namespace MineSweeper
 
     public void Run()
     {
-      var dimensions = GetValidDimensions();
-      var noOfMines = GetNumberOfMines(dimensions);
-      var minePositioning = new RandomMinePositions(dimensions, dimensions, noOfMines);
-      var mineField = new MineField(dimensions, dimensions, minePositioning);
+      var rowDimensions = GetValidDimensions();
+      var colDimensions = GetValidDimensions();
+      var noOfMines = GetNumberOfMines(rowDimensions, colDimensions);
+      var minePositioning = new RandomMinePositions(rowDimensions, colDimensions, noOfMines);
+      var mineField = new MineField(rowDimensions, colDimensions, minePositioning);
       var game = new Game(mineField);
       do
       {
@@ -50,29 +51,29 @@ namespace MineSweeper
 
     public int GetValidDimensions()
     {
-      int squareDimensions = 0;
+      int fieldDimension = 0;
       string userInput;
       do
       {
-        userInput = _inPut.ReadInput("Enter dimensions you want for your field (bw 3 - 30");
+        userInput = _inPut.ReadInput("Enter a value for field dimensions (bw 3 - 30");
         try
         {
           IsValidDimension(userInput);
-          squareDimensions = int.Parse(userInput);
+          fieldDimension = int.Parse(userInput);
         }
         catch (FormatException)
         {
           _outPut.Write("Please enter a number");
         }
       } while (!IsValidDimension(userInput));
-      return squareDimensions;
+      return fieldDimension;
     }
     public static bool IsValidDimension(string input)
     {
       int.TryParse(input, out int number);
       return number >= 3 && number < 30;
     }
-    public int GetNumberOfMines(int dimensions)
+    public int GetNumberOfMines(int rowDimensions, int colDimensions)
     {
       bool parsed;
       int result;
@@ -82,7 +83,7 @@ namespace MineSweeper
         parsed = int.TryParse(userInput, out int outInt);
         result = outInt;
       }
-      while (!parsed || result > dimensions);
+      while (!parsed || result > rowDimensions * colDimensions);
       return result;
     }
     public RowColumn ParseInputToRowColumn()

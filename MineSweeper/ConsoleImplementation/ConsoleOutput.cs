@@ -12,14 +12,14 @@ namespace MineSweeper.ConsoleImplementation
     public void Render(string field)
     {
       Console.Clear();
-      var heading = "-----MINESWEEPER-----";
-      var footer = "---------------------";
       this.Write("\n\n\n");
-      Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (heading.Length / 2)) + "}", heading));
-      Console.WriteLine(String.Format("{0," + ((Console.WindowWidth) + (heading.Length)) + "}", field));
-
-      Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (heading.Length / 2)) + "}", footer));
-
+      var heading = "---------MINESWEEPER---------\n";
+      var footer = "\n-----------------------------";
+      var sb = new StringBuilder();
+      sb.Append(heading);
+      sb.Append(field);
+      sb.Append(footer);
+      this.Write(sb.ToString());
     }
   }
 }
