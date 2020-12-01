@@ -20,36 +20,29 @@ namespace MineSweeper
       var minePositioning = new RandomMinePositions(rowDimensions, colDimensions, noOfMines);
       var mineField = new MineField(rowDimensions, colDimensions, minePositioning);
       var game = new Game(mineField);
-      //handle first hit and re-arrange upon loss
-      game.HandleFirstHit(ParseInputToRowColumn());
+      game.HandleFirstHit(ParseInputToRowColumn(rowDimensions, colDimensions));
       _outPut.Render(game.GetCurrentField());
 
       do
       {
-        try
-        {
-          _outPut.Render(game.GetCurrentField());
-          ProcessTurn(game);
-        }
-        catch (Exception ex) when (ex is IndexOutOfRangeException || ex is FormatException)
-        {
-        }
+        _outPut.Render(game.GetCurrentField());
+        ProcessTurn(game, rowDimensions, colDimensions);
       } while (!game.HasWon() && !game.PlayerLost);
       _outPut.Render(game.GetCurrentField());
       var endMessage = game.HasWon() ? "Well done" : "You lost";
       _outPut.Write(endMessage);
     }
 
-    public void ProcessTurn(Game game)
+    public void ProcessTurn(Game game, int rowDimension, int colDimension)
     {
       var action = _inPut.ReadInput("'H' to hit 'F' to Flag");
       if (action == "H")
       {
-        game.HitSelectedSquare(ParseInputToRowColumn());
+        game.HitSelectedSquare(ParseInputToRowColumn(rowDimension, colDimension));
       }
       if (action == "F")
       {
-        game.FlagSquare(ParseInputToRowColumn());
+        game.FlagSquare(ParseInputToRowColumn(rowDimension, colDimension));
       }
     }
 
@@ -90,12 +83,21 @@ namespace MineSweeper
       while (!parsed || result > rowDimensions * colDimensions);
       return result;
     }
-    public RowColumn ParseInputToRowColumn()
+    public RowColumn ParseInputToRowColumn(int rowDimensions, int columnDimensions)
     {
+      while (true)
       {
         var input = _inPut.ReadInput("enter a row column eg: '0 0'");
         var chars = input.Split(" ", StringSplitOptions.None);
-        return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
+        if (chars.Length == 2)
+        {
+          var isParsedRow = int.TryParse(chars[0], out int row);
+          var isParsedCol = int.TryParse(chars[1], out int col);
+          if (isParsedRow && isParsedCol && row < rowDimensions && col < columnDimensions)
+          {
+            return new RowColumn(int.Parse(chars[0]), int.Parse(chars[1]));
+          }
+        }
       }
     }
   }
