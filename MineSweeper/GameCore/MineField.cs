@@ -34,7 +34,6 @@ namespace MineSweeper
     {
       FillFieldWithSquares();
       var mines = _minePositioning.GetMinePositions();
-      // MineCount = mines.Count();
       PlaceMines(mines);
       SetSquareHintValues();
     }
@@ -138,7 +137,6 @@ namespace MineSweeper
         }
       }
     }
-
     public IEnumerator<Square> GetEnumerator() => _field.Cast<Square>().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

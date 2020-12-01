@@ -23,29 +23,15 @@ namespace MineSweeper.Tests
     [Fact]
     public void CantLoseOnFirstHitCalculatesCluesAgainAppropriately()
     {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2) });
+      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(1,0), new RowColumn(1,1) });
       var mineField = new MineField(3, 3, minePositioning);
       var game = new Game(mineField);
       game.HandleFirstHit(new RowColumn(0, 0));
-      var expectedField = "1  \n"
+      var expectedField = "3  \n"
                         + "   \n"
                         + "   \n";
-                        
       Assert.Equal(expectedField, game.GetCurrentField());
     }
-
-    /*
-      Before:
-      *21
-      12*
-      011
-
-      After:
-      1*2
-      12*
-      011
-    */
-
     [Fact]
     public void StilHasSameNumberOfMinesAfterFirstHitRearrange()
     {

@@ -35,12 +35,12 @@ namespace MineSweeper.Tests
       var field = new MineField(5, 5, minePlacement);
       Assert.Equal(25, field.MineCount);
     }
-    [Fact]
-    public void ThrowsExceptionIfSetMinesHasAnOutOfIndexItem()
-    {
-      var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(5, 4) });
-      var ex = Assert.Throws<ArgumentException>(() => new MineField(3, 3, minePositioning));
-      Assert.Equal("Mine list contains elements greater than field array dimensions", ex.Message);
-    }
+    // [Fact]
+    // public void ThrowsExceptionIfSetMinesHasAnOutOfIndexItem()
+    // {
+    //   var minePositioning = new SetMinePositions(new HashSet<RowColumn> { new RowColumn(0, 0), new RowColumn(2, 2), new RowColumn(5, 4) });
+    //   var ex = Assert.Throws<ArgumentException>(() => new MineField(3, 3, minePositioning));
+    //   Assert.Equal("Mine list contains elements greater than field array dimensions", ex.Message);
+    // }
   }
 }

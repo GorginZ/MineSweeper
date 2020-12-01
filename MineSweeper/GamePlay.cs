@@ -11,48 +11,18 @@ namespace MineSweeper
       _inPut = userInput;
       _outPut = outPut;
     }
-
-    public void Run()
+    public static bool IsValidDimension(string input)
     {
-      var rowDimensions = GetValidDimensions();
-      var colDimensions = GetValidDimensions();
-      var noOfMines = GetNumberOfMines(rowDimensions, colDimensions);
-      var minePositioning = new RandomMinePositions(rowDimensions, colDimensions, noOfMines);
-      var mineField = new MineField(rowDimensions, colDimensions, minePositioning);
-      var game = new Game(mineField);
-      game.HandleFirstHit(ParseInputToRowColumn(rowDimensions, colDimensions));
-      _outPut.Render(game.GetCurrentField());
-
-      do
-      {
-        _outPut.Render(game.GetCurrentField());
-        ProcessTurn(game, rowDimensions, colDimensions);
-      } while (!game.HasWon() && !game.PlayerLost);
-      _outPut.Render(game.GetCurrentField());
-      var endMessage = game.HasWon() ? "Well done" : "You lost";
-      _outPut.Write(endMessage);
+      int.TryParse(input, out int number);
+      return number >= 3 && number <= 30;
     }
-
-    public void ProcessTurn(Game game, int rowDimension, int colDimension)
-    {
-      var action = _inPut.ReadInput("'H' to hit 'F' to Flag");
-      if (action == "H")
-      {
-        game.HitSelectedSquare(ParseInputToRowColumn(rowDimension, colDimension));
-      }
-      if (action == "F")
-      {
-        game.FlagSquare(ParseInputToRowColumn(rowDimension, colDimension));
-      }
-    }
-
-    public int GetValidDimensions()
+    public int GetValidDimensions(string dimension)
     {
       int fieldDimension = 0;
       string userInput;
       do
       {
-        userInput = _inPut.ReadInput("Enter a value for field dimensions (bw 3 - 30, recommended: 15 rows 30 columns )");
+        userInput = _inPut.ReadInput($"enter a value for {dimension} dimension (bw 3 - 30, recommended: 15 rows 30 columns )");
         try
         {
           IsValidDimension(userInput);
@@ -65,11 +35,20 @@ namespace MineSweeper
       } while (!IsValidDimension(userInput));
       return fieldDimension;
     }
-    public static bool IsValidDimension(string input)
+
+    public void ProcessTurn(Game game, int rowDimension, int colDimension)
     {
-      int.TryParse(input, out int number);
-      return number >= 3 && number < 30;
+      var action = _inPut.ReadInput("'H' to hit 'F' to Flag").ToUpper();
+      if (action == "H")
+      {
+        game.HitSelectedSquare(ParseInputToRowColumn(rowDimension, colDimension));
+      }
+      if (action == "F")
+      {
+        game.FlagSquare(ParseInputToRowColumn(rowDimension, colDimension));
+      }
     }
+
     public int GetNumberOfMines(int rowDimensions, int colDimensions)
     {
       bool parsed;
@@ -80,7 +59,7 @@ namespace MineSweeper
         parsed = int.TryParse(userInput, out int outInt);
         result = outInt;
       }
-      while (!parsed || result > rowDimensions * colDimensions);
+      while (!parsed || result > (rowDimensions * colDimensions) - 1);
       return result;
     }
     public RowColumn ParseInputToRowColumn(int rowDimensions, int columnDimensions)
@@ -99,6 +78,27 @@ namespace MineSweeper
           }
         }
       }
+    }
+    public void Run()
+    {
+      var rowDimensions = GetValidDimensions("row");
+      var colDimensions = GetValidDimensions("column");
+      var noOfMines = GetNumberOfMines(rowDimensions, colDimensions);
+      var minePositioning = new RandomMinePositions(rowDimensions, colDimensions, noOfMines);
+      var mineField = new MineField(rowDimensions, colDimensions, minePositioning);
+      var game = new Game(mineField);
+
+      game.HandleFirstHit(ParseInputToRowColumn(rowDimensions, colDimensions));
+      _outPut.Render(game.GetCurrentField());
+
+      do
+      {
+        _outPut.Render(game.GetCurrentField());
+        ProcessTurn(game, rowDimensions, colDimensions);
+      } while (!game.HasWon() && !game.PlayerLost);
+      _outPut.Render(game.GetCurrentField());
+      var endMessage = game.HasWon() ? "Well done" : "You Hit A Mine";
+      _outPut.Write(endMessage);
     }
   }
 }
