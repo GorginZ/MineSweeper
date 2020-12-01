@@ -17,10 +17,6 @@ namespace MineSweeper
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
     {
-      if (rowDimension < 2 || columnDimension < 2)
-      {
-        throw new ArgumentException("row and column dimensions are below minimum usable value");
-      }
       _field = new Square[rowDimension, columnDimension];
       _minePositioning = minePositioning;
       try
@@ -32,12 +28,13 @@ namespace MineSweeper
         throw new ArgumentException("Mine list contains elements greater than field array dimensions");
       }
     }
-    public Square this[RowColumn coord] => _field[coord.Row, coord.Column];
+    public Square this[RowColumn index] => _field[index.Row, index.Column];
 
     private void InitializeField()
     {
       FillFieldWithSquares();
       var mines = _minePositioning.GetMinePositions();
+      // MineCount = mines.Count();
       PlaceMines(mines);
       SetSquareHintValues();
     }
@@ -123,6 +120,23 @@ namespace MineSweeper
     public bool IsRevealed(RowColumn index)
     {
       return this[index].IsRevealed;
+    }
+    public bool IsNotMine(RowColumn index)
+    {
+      return this[index].SquareType == SquareType.Mine;
+    }
+    public void MineHitOnFirstHitReArrange(RowColumn firstHit)
+    {
+      foreach (var index in Indexes())
+      {
+        if (this[index].SquareType != SquareType.Mine && !index.Equals(firstHit))
+        {
+          this[index].SquareType = SquareType.Mine;
+          this[firstHit].SquareType = SquareType.Zero;
+          this.SetSquareHintValues();
+          return;
+        }
+      }
     }
 
     public IEnumerator<Square> GetEnumerator() => _field.Cast<Square>().GetEnumerator();

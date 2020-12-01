@@ -21,6 +21,9 @@ namespace MineSweeper
       var mineField = new MineField(rowDimensions, colDimensions, minePositioning);
       var game = new Game(mineField);
       //handle first hit and re-arrange upon loss
+      game.HandleFirstHit(ParseInputToRowColumn());
+      _outPut.Render(game.GetCurrentField());
+
       do
       {
         try

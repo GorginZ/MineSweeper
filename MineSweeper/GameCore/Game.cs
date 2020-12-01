@@ -18,6 +18,14 @@ namespace MineSweeper
     {
       return this._field.FieldAsString();
     }
+    public void HandleFirstHit(RowColumn index)
+    {
+      if (_field[index].SquareType == SquareType.Mine)
+      {
+        _field.MineHitOnFirstHitReArrange(index);
+      }
+      HitSelectedSquare(index);
+    }
     public void HitSelectedSquare(RowColumn index)
     {
       try
