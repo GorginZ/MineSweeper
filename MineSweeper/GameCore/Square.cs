@@ -32,7 +32,7 @@ namespace MineSweeper
         SquareType.Seven => "7",
         SquareType.Eight => "8",
         SquareType.Mine => "*",
-        _ => throw new ArgumentException(nameof(SquareType))
+        _ => throw new ApplicationException(nameof(SquareType))
       };
     }
   }

@@ -13,23 +13,14 @@ namespace MineSweeper
     public int ColumnDimension => _field.GetLength(1);
     public int MineCount => this.Count(square => square.SquareType == SquareType.Mine);
     public int RevealedCount => Indexes().Where(IsRevealed).Count();
-
     private readonly IMinePositions _minePositioning;
     public MineField(int rowDimension, int columnDimension, IMinePositions minePositioning)
     {
       _field = new Square[rowDimension, columnDimension];
       _minePositioning = minePositioning;
-      try
-      {
-        InitializeField();
-      }
-      catch (IndexOutOfRangeException)
-      {
-        throw new ArgumentException("Mine list contains elements greater than field array dimensions");
-      }
+      InitializeField();
     }
     public Square this[RowColumn index] => _field[index.Row, index.Column];
-
     private void InitializeField()
     {
       FillFieldWithSquares();
@@ -119,10 +110,6 @@ namespace MineSweeper
     public bool IsRevealed(RowColumn index)
     {
       return this[index].IsRevealed;
-    }
-    public bool IsNotMine(RowColumn index)
-    {
-      return this[index].SquareType == SquareType.Mine;
     }
     public void MineHitOnFirstHitReArrange(RowColumn firstHit)
     {
