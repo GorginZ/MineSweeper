@@ -9,6 +9,7 @@ namespace MineSweeper.ConsoleImplementation
     {
       Console.WriteLine(printThis);
     }
+    // not staying here 
     public void Render(string field)
     {
       Console.Clear();

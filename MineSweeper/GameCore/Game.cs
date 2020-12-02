@@ -7,7 +7,7 @@ namespace MineSweeper
   public class Game
   {
     private readonly MineField _field;
-    public bool PlayerLost;
+    public bool HasPlayerLost;
 
     public Game(MineField field)
     {
@@ -18,6 +18,14 @@ namespace MineSweeper
     {
       return this._field.FieldAsString();
     }
+    public void HandleFirstHit(RowColumn index)
+    {
+      if (_field[index].SquareType == SquareType.Mine)
+      {
+        _field.MineHitOnFirstHitReArrange(index);
+      }
+      HitSelectedSquare(index);
+    }
     public void HitSelectedSquare(RowColumn index)
     {
       try
@@ -25,7 +33,7 @@ namespace MineSweeper
         if (_field[index].SquareType == SquareType.Mine)
         {
           FindAndRevealMines();
-          this.PlayerLost = true;
+          this.HasPlayerLost = true;
         }
         if (_field[index].IsRevealed)
         {
@@ -40,11 +48,8 @@ namespace MineSweeper
           RevealAllAssociatedAdjacentSquaresProcess(index);
         }
       }
-      catch (IndexOutOfRangeException)
-      {
-      }
     }
-    public void RevealAllAssociatedAdjacentSquaresProcess(RowColumn index)
+    private void RevealAllAssociatedAdjacentSquaresProcess(RowColumn index)
     {
       var neighbours = _field.GetNeighboursOfSquare(index.Row, index.Column);
       foreach (RowColumn rowCol in neighbours)
